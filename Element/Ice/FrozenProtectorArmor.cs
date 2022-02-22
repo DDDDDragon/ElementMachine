@@ -1,19 +1,8 @@
 ﻿using Terraria;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.UI;
-using Terraria.Graphics.Shaders;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
-using System.IO;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+using ElementMachine.Tiles;
 
 namespace ElementMachine.Element.Ice
 {
@@ -65,7 +54,8 @@ namespace ElementMachine.Element.Ice
             recipe.AddIngredient(ItemID.IceBlock, 30);
             recipe.AddIngredient(ItemID.SnowBlock, 30);
             recipe.AddIngredient(ItemID.SlushBlock, 30);
-            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 10);
+            recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

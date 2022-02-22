@@ -1,22 +1,11 @@
 ﻿using Terraria;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.UI;
-using Terraria.Graphics;
 using Terraria.Localization;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System.IO;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ElementMachine;
-using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Input;
+using ElementMachine.Buffs;
+using ElementMachine.Tiles;
 
 namespace ElementMachine.Element.Ice
 {
@@ -26,7 +15,8 @@ namespace ElementMachine.Element.Ice
 		{
 			DisplayName.SetDefault("FrozenSpear");
 			DisplayName.AddTranslation(GameCulture.Chinese, "霜寒长矛");
-			Tooltip.SetDefault("冰冷刺骨\n左键蓄力刺出，右键可以当作投矛使用");
+			Tooltip.SetDefault("it's so cold\nleft click to channel and attack, right click to throw it as a Thrown Spear");
+			Tooltip.AddTranslation(GameCulture.Chinese, "冰冷刺骨\n左键蓄力刺出,右键可以当作投矛使用");
 		}
 
 		public override void SetDefaults()
@@ -79,7 +69,8 @@ namespace ElementMachine.Element.Ice
 			recipe.AddIngredient(ItemID.IceBlock, 20);
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
-			recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 7);
+			recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
@@ -128,7 +119,7 @@ namespace ElementMachine.Element.Ice
 		}*/
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-			target.AddBuff(BuffID.Frozen, 180);
+			target.AddBuff(ModContent.BuffType<lowerSpeed>(), 180);
             base.OnHitNPC(target, damage, knockback, crit);
         }
     }
@@ -231,7 +222,7 @@ namespace ElementMachine.Element.Ice
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			target.AddBuff(BuffID.Frozen, 180);
+			target.AddBuff(ModContent.BuffType<lowerSpeed>(), 180);
 			base.OnHitNPC(target, damage, knockback, crit);
 		}
 	}

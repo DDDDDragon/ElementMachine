@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
+using ElementMachine.Tiles;
 
 namespace ElementMachine.Element.Earth
 {
@@ -32,7 +33,8 @@ namespace ElementMachine.Element.Earth
 		{
 			ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ModContent.ItemType<AntlionCarapace>(), 20);
-            recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ItemID.SandBlock, 20);
+            recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

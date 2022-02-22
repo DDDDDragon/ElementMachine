@@ -1,20 +1,8 @@
 ﻿using Terraria;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.UI;
-using Terraria.Graphics.Shaders;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
-using System.IO;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-
+using ElementMachine.Tiles;
 
 namespace ElementMachine.Element.Ice
 {
@@ -25,7 +13,7 @@ namespace ElementMachine.Element.Ice
             DisplayName.SetDefault("FrozenRuneStone");
             DisplayName.AddTranslation(GameCulture.Chinese, "霜寒符石");
             Tooltip.SetDefault("Don't ask me why ice and snow can be made into stone\nafter all it's so cold!!!\n1 more defnese and 2 in snow\nadd 3% melee damage and 2 armor penetration");
-            Tooltip.AddTranslation(GameCulture.Chinese, "别问我冰和雪是怎么做成石头的\n反正它很冷就对了\n增加一点防御力，在雪地时则增加两点\n增加3%的近战伤害与2点穿甲");
+            Tooltip.AddTranslation(GameCulture.Chinese, "别问我冰和雪是怎么做成石头的\n反正它很冷就对了\n增加一点防御力,在雪地时则增加两点\n增加3%的近战伤害与2点穿甲");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
@@ -51,7 +39,8 @@ namespace ElementMachine.Element.Ice
 			recipe.AddIngredient(ItemID.IceBlock, 20);
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
-			recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 5);
+			recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

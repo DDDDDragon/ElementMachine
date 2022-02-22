@@ -37,8 +37,8 @@ namespace ElementMachine.Element.Nature
         {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Vine, 5);
-            recipe.AddRecipeGroup("Wood", 20);
-			recipe.AddTile(TileID.WorkBenches);
+            recipe.AddRecipeGroup(RecipeGroupID.Wood, 20);
+			recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

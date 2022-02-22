@@ -29,7 +29,7 @@ namespace ElementMachine.Element.Earth
 			DisplayName.SetDefault("AntlionBones");
 			DisplayName.AddTranslation(GameCulture.Chinese, "蚁狮骨");
 			Tooltip.SetDefault("Why a insect has bones ????");
-			Tooltip.AddTranslation(GameCulture.Chinese, "为啥虫子会长大骨棒？？？");
+			Tooltip.AddTranslation(GameCulture.Chinese, "为啥虫子会长大骨棒????");
 		}
         public override void SetDefaults()
 		{
