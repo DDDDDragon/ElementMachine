@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ElementMachine.Buffs;
 
-namespace EaM.NPCs
+namespace ElementMachine.NPCs
 {
 	public class EarthStatue : ModNPC
 	{
