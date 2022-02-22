@@ -34,7 +34,7 @@ namespace ElementMachine.Element.Earth
 			ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ModContent.ItemType<AntlionCarapace>(), 15);
             recipe.AddIngredient(ItemID.SandBlock, 15);
-            recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
+            recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

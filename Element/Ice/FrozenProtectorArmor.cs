@@ -55,7 +55,7 @@ namespace ElementMachine.Element.Ice
             recipe.AddIngredient(ItemID.SnowBlock, 30);
             recipe.AddIngredient(ItemID.SlushBlock, 30);
             recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 10);
-            recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
+            recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

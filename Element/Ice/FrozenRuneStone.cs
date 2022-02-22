@@ -40,7 +40,7 @@ namespace ElementMachine.Element.Ice
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
             recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 5);
-			recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
+			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

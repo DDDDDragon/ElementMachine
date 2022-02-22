@@ -41,7 +41,7 @@ namespace ElementMachine.Element.Nature
             recipe.AddIngredient(ModContent.ItemType<VineChakram>(), 1);
 			recipe.AddIngredient(ItemID.Stinger, 20);
             recipe.AddIngredient(ItemID.JungleSpores, 20);
-			recipe.AddTile(ModContent.TileType<ElementHoroScpoer>());
+			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
