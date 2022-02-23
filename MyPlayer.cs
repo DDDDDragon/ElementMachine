@@ -10,19 +10,19 @@ namespace ElementMachine
 {
     public class MyPlayer : ModPlayer 
     {
-        public static List<int> AnalyzedItemsType = new List<int>();
+        public static List<string> AnalyzedItemsName = new List<string>();
         public static List<int> AnalyzedItemsValue = new List<int>();
         
         public override TagCompound Save()
         {
             TagCompound tag = new TagCompound();
-            tag.Add("AnalyzedItemsType", AnalyzedItemsType);
+            tag.Add("AnalyzedItemsName", AnalyzedItemsName);
             tag.Add("AnalyzedItemsValue", AnalyzedItemsValue);
             return tag;
         }
         public override void Load(TagCompound tag)
         {
-            AnalyzedItemsType = tag.Get<List<int>>("AnalyzedItemsType");
+            AnalyzedItemsName = tag.Get<List<string>>("AnalyzedItemsName");
             AnalyzedItemsValue = tag.Get<List<int>>("AnalyzedItemsValue");
             base.Load(tag);
         }

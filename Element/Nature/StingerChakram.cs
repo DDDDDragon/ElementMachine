@@ -51,7 +51,7 @@ namespace ElementMachine.Element.Nature
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
-            target.AddBuff(BuffID.Poisoned, 3000);
+            target.AddBuff(BuffID.Poisoned, 180);
         }
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {

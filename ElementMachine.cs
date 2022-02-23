@@ -91,12 +91,12 @@ namespace ElementMachine
 						
 						Main.instance.shop[Main.npcShop].item[nextSlot].SetDefaults(ItemID.Chest);
 						Main.instance.shop[Main.npcShop].item[nextSlot].value = 1000;
-						if(MyPlayer.AnalyzedItemsType.Count > 0)
+						if(MyPlayer.AnalyzedItemsName.Count > 0)
 						{
-							while(nextSlot < MyPlayer.AnalyzedItemsType.Count)
+							while(nextSlot < MyPlayer.AnalyzedItemsName.Count)
 							{
 								nextSlot++;
-								Main.instance.shop[Main.npcShop].item[nextSlot].SetDefaults(MyPlayer.AnalyzedItemsType[nextSlot - 1]);
+								Main.instance.shop[Main.npcShop].item[nextSlot].SetDefaults(this.ItemType(MyPlayer.AnalyzedItemsName[nextSlot - 1]));
 								Main.instance.shop[Main.npcShop].item[nextSlot].value = MyPlayer.AnalyzedItemsValue[nextSlot - 1];
 							}
 						}

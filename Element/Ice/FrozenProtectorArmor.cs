@@ -13,7 +13,8 @@ namespace ElementMachine.Element.Ice
         {
             DisplayName.SetDefault("FrozenProtectorArmor");
             DisplayName.AddTranslation(GameCulture.Chinese, "霜寒守卫者胸甲");
-            Tooltip.SetDefault("增加5%的近战伤害");
+            Tooltip.SetDefault("increase 5% melee damage");
+            Tooltip.AddTranslation(GameCulture.Chinese, "增加5%的近战伤害");
             base.SetStaticDefaults();
         }
         public override string Texture => base.Texture;

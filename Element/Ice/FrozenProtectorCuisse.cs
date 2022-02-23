@@ -13,7 +13,8 @@ namespace ElementMachine.Element.Ice
         {
             DisplayName.SetDefault("FrozenProtectorCuisse");
             DisplayName.AddTranslation(GameCulture.Chinese, "霜寒守卫者护腿");
-            Tooltip.SetDefault("提高5%的近战暴击率");
+            Tooltip.SetDefault("increase 5% melee Crit");
+            Tooltip.AddTranslation(GameCulture.Chinese, "提高5%的近战暴击率");
             base.SetStaticDefaults();
         }
         public override void UpdateEquip(Player player)

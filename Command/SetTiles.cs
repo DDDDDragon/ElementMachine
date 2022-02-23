@@ -43,4 +43,22 @@ namespace ElementMachine.Command
             }
         }
     }
+    public class ClearI : ModCommand
+    {
+        public override CommandType Type
+            => CommandType.Chat;
+        public override string Command
+            => "ClearI";
+
+        public override string Usage
+            => "ClearI";
+
+        public override string Description
+            => "";
+        public override void Action(CommandCaller caller, string input, string[] args)
+        {
+            MyPlayer.AnalyzedItemsName.Clear();
+            MyPlayer.AnalyzedItemsValue.Clear();
+        }
+    }
 }

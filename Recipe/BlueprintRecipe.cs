@@ -12,9 +12,9 @@ namespace ElementMachine.Recipe
 
         public override void OnCraft(Item item)
         {
-            if(!MyPlayer.AnalyzedItemsType.Contains(item.type))
+            if(!MyPlayer.AnalyzedItemsName.Contains(item.modItem.Name))
             {
-                MyPlayer.AnalyzedItemsType.Add(item.type);
+                MyPlayer.AnalyzedItemsName.Add(item.modItem.Name);
                 MyPlayer.AnalyzedItemsValue.Add(item.value);
                 Main.NewText($"[c/3100FF:{item.Name}] 已分析完毕, 可在向导商店处购买");
             }

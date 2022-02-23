@@ -13,7 +13,8 @@ namespace ElementMachine.Element.Ice
         {
             DisplayName.SetDefault("FrozenProtectorHelmet");
             DisplayName.AddTranslation(GameCulture.Chinese, "霜寒守卫者头盔");
-            Tooltip.SetDefault("提高5%的近战速度");
+            Tooltip.SetDefault("increase 5% melee speed");
+            Tooltip.AddTranslation(GameCulture.Chinese, "提高5%的近战速度");
             base.SetStaticDefaults();
         }
         public override void UpdateEquip(Player player)
