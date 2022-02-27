@@ -1,3 +1,4 @@
 displayName = Element-Machine
 author = DragonDance
-version = 0.1.2.3
+version = 0.1.2.4
+homepage = https://forums.terraria.org/index.php?threads/elementmachine-mod.111112/

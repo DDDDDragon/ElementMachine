@@ -5,6 +5,7 @@ using Terraria;
 using System.Reflection;
 using Terraria.Localization;
 using ElementMachine.Tiles;
+using ElementMachine.World;
 
 namespace ElementMachine
 {
@@ -12,6 +13,7 @@ namespace ElementMachine
     {
         public static List<string> AnalyzedItemsName = new List<string>();
         public static List<int> AnalyzedItemsValue = new List<int>();
+        public static RandomCreate randomCreate = new RandomCreate(10, 10, 20);
         
         public override TagCompound Save()
         {

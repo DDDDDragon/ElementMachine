@@ -14,8 +14,6 @@ namespace ElementMachine.Tiles
         {
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
-            Main.tileSolidTop[Type] = true;
-            Main.tileTable[Type] = true;
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
             TileObjectData.newTile.CoordinateHeights = new int[]{ 16, 18 };

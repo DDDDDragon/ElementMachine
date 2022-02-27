@@ -26,7 +26,8 @@ namespace ElementMachine.Bases
 			return true;
 		}
 		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) {
-			if (!line.oneDropLogo) {
+			if (!line.oneDropLogo) 
+			{
 				string sepText = "[c/00FF00:「" + Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer * 100 + "%额外钩镰伤害」]";
 				if (line.Name == "Damage" && line.mod == "Terraria")
 				{

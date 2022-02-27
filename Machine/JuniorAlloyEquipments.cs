@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
 using ElementMachine.Tiles;
+using ElementMachine.Buffs;
 
 namespace ElementMachine.Machine
 {
@@ -78,9 +79,11 @@ namespace ElementMachine.Machine
         }
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "增加10%全部伤害, 增加1点防御";
-            player.allDamage += 0.1f;
+            if(GameCulture.Chinese.IsActive) player.setBonus = "增加7%全部伤害, 增加1点防御\n使用合金武器攻击敌人时为玩家添加1层'液压引擎'buff\n每层为玩家提供3%全攻击力提升,至多5层,停止攻击后层数迅速减少";
+            else player.setBonus = "increase 7% all damage\nwhen using alloy weapon, if you hit NPC, you will get 1 layer of HydraulicEngine buff\neach layer will increase 3% all damage, at most 5 layers, if stop hitting NPC, layer will decrease quickly";
+            player.allDamage += 0.07f;
             player.statDefense += 1;
+            player.GetModPlayer<MachinePlayer>().MachineArmorSet = true;
             base.UpdateArmorSet(player);
         }
     }
@@ -116,5 +119,41 @@ namespace ElementMachine.Machine
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
+    }
+    public class JuniorAlloySword : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("JuniorAlloySword");
+            DisplayName.AddTranslation(GameCulture.Chinese, "初级合金制式长剑");
+            Tooltip.SetDefault("just ju-nior √");
+            Tooltip.AddTranslation(GameCulture.Chinese, "确实初级");
+        }
+        public override void SetDefaults()
+        {
+            item.channel = true;
+            item.width = 54;
+            item.height = 56;
+            item.maxStack = 1;
+            item.rare = ItemRarityID.Blue;
+            item.damage = 15;
+            item.knockBack = 0.25f;
+            item.useStyle = 1;
+            item.value = Item.sellPrice(0, 0, 10, 0);
+            item.scale = 0.85f;
+            item.autoReuse = true;
+            item.useTime = 20;
+            item.useAnimation = 20;
+        }
+        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        {
+            if(player.GetModPlayer<MachinePlayer>().MachineArmorSet)
+            {
+                player.AddBuff(ModContent.BuffType<HydraulicEngine>(), 1);
+                if(player.GetModPlayer<BuffPlayer>().JuniorAlloyNum < 5)player.GetModPlayer<BuffPlayer>().JuniorAlloyNum++;
+                player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer = 180;
+            }
+            base.OnHitNPC(player, target, damage, knockBack, crit);
+        }
     }
 }

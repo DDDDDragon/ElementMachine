@@ -61,4 +61,38 @@ namespace ElementMachine.Command
             MyPlayer.AnalyzedItemsValue.Clear();
         }
     }
+    public class Create : ModCommand
+    {
+        public override CommandType Type
+            => CommandType.Chat;
+        public override string Command
+            => "Create";
+
+        public override string Usage
+            => "Create C/ Create S";
+
+        public override string Description
+            => "";
+        public override void Action(CommandCaller caller, string input, string[] args)
+        {
+            Main.NewText(args);
+            if(args.Length > 0)
+            {
+                if(args[0] == "R") 
+                {
+                    MyPlayer.randomCreate = new RandomCreate(int.Parse(args[1]), int.Parse(args[2]), int.Parse(args[3]));
+                    Main.NewText("刷新randomCreate为" + args[1] + " " + args[2] + " " + args[3]);
+                }
+                if(args[0] == "C") 
+                {
+                    MyPlayer.randomCreate.Create();
+                    Main.NewText("randomCreate创建成功,当前randomCreate为" + MyPlayer.randomCreate.MaxHeight + " " + MyPlayer.randomCreate.MaxWidth + " " + MyPlayer.randomCreate.step);
+                }
+                if(args[0] == "S")
+                {
+                    MyPlayer.randomCreate.setToWorld();
+                }
+            }
+        }
+    }
 }
