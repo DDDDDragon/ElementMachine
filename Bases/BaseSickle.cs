@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace ElementMachine.Bases
 {
-	public abstract class BaseSickleItem : ModItem
+	public abstract class BaseSickleItem : ElementItem
 	{
 		public override void SetStaticDefaults()
         {
@@ -21,11 +21,9 @@ namespace ElementMachine.Bases
 			Tooltip.SetDefault("shoot a chain blade and keep it on the first enemy it hits ");
 			Tooltip.AddTranslation(GameCulture.Chinese, "[c/00FF00:「钩镰」]\n发射一个链刃并钩住第一个它命中的敌人,松开左键会收回\n若敌人超出160码则不会钩住\n每次钩中敌人可以增加一点命中点数\n每次钩中敌人时按右键可以向鼠标方向位移一段距离,位移期间无敌\n若你与敌人的距离大于160码则敌人会向你的方向同时位移更小的一段距离\n若位移未结束前收回钩镰会进行一次超远距离跳跃\n[c/8c6640:「特效」]\n钩镰存在时,按下E键," + Effect);
         }
-		public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) 
+		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) 
 		{
-			return true;
-		}
-		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) {
+			base.PreDrawTooltipLine(line, ref yOffset);
 			if (!line.oneDropLogo) 
 			{
 				string sepText = "[c/00FF00:「" + Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer * 100 + "%额外钩镰伤害」]";

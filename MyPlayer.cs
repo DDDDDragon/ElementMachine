@@ -6,6 +6,7 @@ using System.Reflection;
 using Terraria.Localization;
 using ElementMachine.Tiles;
 using ElementMachine.World;
+using Microsoft.Xna.Framework;
 
 namespace ElementMachine
 {
@@ -13,19 +14,31 @@ namespace ElementMachine
     {
         public static List<string> AnalyzedItemsName = new List<string>();
         public static List<int> AnalyzedItemsValue = new List<int>();
+        public static List<string> Oblations = new List<string>();
         public static RandomCreate randomCreate = new RandomCreate(10, 10, 20);
+        public enum AltarType
+        {
+            None,
+            Flame,
+            Ice
+        }
+        public static Dictionary<Vector2, AltarType> AltarTypes = new Dictionary<Vector2, AltarType>();
         
         public override TagCompound Save()
         {
             TagCompound tag = new TagCompound();
             tag.Add("AnalyzedItemsName", AnalyzedItemsName);
             tag.Add("AnalyzedItemsValue", AnalyzedItemsValue);
+            tag.Add("Oblations", Oblations);
+            //tag.Add("AltarTypes", AltarTypes);
             return tag;
         }
         public override void Load(TagCompound tag)
         {
             AnalyzedItemsName = tag.Get<List<string>>("AnalyzedItemsName");
             AnalyzedItemsValue = tag.Get<List<int>>("AnalyzedItemsValue");
+            Oblations = tag.Get<List<string>>("Oblations");
+            //AltarTypes = tag.Get<Dictionary<Vector2, AltarType>>("AltarTypes");
             base.Load(tag);
         }
         public override void PreUpdate()

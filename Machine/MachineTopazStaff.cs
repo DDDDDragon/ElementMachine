@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.Localization;
 namespace ElementMachine.Machine
 {
-	public class MachineTopazStaff : ModItem
+	public class MachineTopazStaff : MachineItem
 	{
 		public override void SetStaticDefaults()
 		{

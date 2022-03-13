@@ -6,7 +6,7 @@ using ElementMachine.Tiles;
 
 namespace ElementMachine.Machine
 {
-    public class JuniorAlloy : ModItem
+    public class JuniorAlloy : MachineItem
     {
         public override void SetStaticDefaults()
         {

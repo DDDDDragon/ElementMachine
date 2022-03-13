@@ -9,7 +9,7 @@ using ElementMachine.Buffs;
 namespace ElementMachine.Machine
 {
     [AutoloadEquip(EquipType.Head)]
-    public class JuniorAlloyHelmet : ModItem
+    public class JuniorAlloyHelmet : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -42,7 +42,7 @@ namespace ElementMachine.Machine
 		}
     }
     [AutoloadEquip(EquipType.Body)]
-    public class JuniorAlloyArmor : ModItem
+    public class JuniorAlloyArmor : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -88,7 +88,7 @@ namespace ElementMachine.Machine
         }
     }
     [AutoloadEquip(EquipType.Legs)]
-    public class JuniorAlloyCuisse : ModItem
+    public class JuniorAlloyCuisse : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -120,7 +120,7 @@ namespace ElementMachine.Machine
 			recipe.AddRecipe();
 		}
     }
-    public class JuniorAlloySword : ModItem
+    public class JuniorAlloySword : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -135,6 +135,7 @@ namespace ElementMachine.Machine
             item.width = 54;
             item.height = 56;
             item.maxStack = 1;
+            item.melee = true;
             item.rare = ItemRarityID.Blue;
             item.damage = 15;
             item.knockBack = 0.25f;
@@ -145,15 +146,52 @@ namespace ElementMachine.Machine
             item.useTime = 20;
             item.useAnimation = 20;
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 25);
+            recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 25);
+            recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+    }
+    public class JuniorAlloyPistol : MachineItem
+    {
+        public override void SetStaticDefaults()
         {
-            if(player.GetModPlayer<MachinePlayer>().MachineArmorSet)
-            {
-                player.AddBuff(ModContent.BuffType<HydraulicEngine>(), 1);
-                if(player.GetModPlayer<BuffPlayer>().JuniorAlloyNum < 5)player.GetModPlayer<BuffPlayer>().JuniorAlloyNum++;
-                player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer = 180;
-            }
-            base.OnHitNPC(player, target, damage, knockBack, crit);
+            DisplayName.SetDefault("JuniorAlloySword");
+            DisplayName.AddTranslation(GameCulture.Chinese, "初级合金制式手枪");
+            Tooltip.SetDefault("just ju-nior √");
+            Tooltip.AddTranslation(GameCulture.Chinese, "确实初级");
         }
+        public override void SetDefaults()
+        {
+            item.width = 44;
+            item.height = 22;
+            item.maxStack = 1;
+            item.scale = 0.7f;
+            item.ranged = true;
+            item.rare = ItemRarityID.Blue;
+            item.noMelee = true;
+            item.damage = 15;
+            item.knockBack = 0.10f;
+            item.useStyle = 5;
+            item.value = Item.sellPrice(0, 0, 10, 0);
+            item.autoReuse = true;
+            item.useTime = 25;
+            item.useAnimation = 25;
+            item.useAmmo = AmmoID.Bullet;
+            item.shootSpeed = 7f;
+        }
+        public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 25);
+            recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 25);
+            recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
     }
 }

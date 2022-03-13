@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ElementMachine.Machine
 {
-	public class LifeProvider : ModItem
+	public class LifeProvider : MachineItem
 	{
 		public override void SetDefaults()
 		{

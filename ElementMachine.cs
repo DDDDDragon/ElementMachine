@@ -17,86 +17,6 @@ using System;
 
 namespace ElementMachine
 {
-	public class MyUIModStateText : UIElement
-	{
-		private string DisplayText
-		{
-			get
-			{
-				if (!this._enabled)
-				{
-					return Language.GetTextValue("GameUI.Disabled");
-				}
-				return Language.GetTextValue("GameUI.Enabled");
-			}
-		}
-		private Color DisplayColor
-		{
-			get
-			{
-				if (!this._enabled)
-				{
-					return Color.Red;
-				}
-				return Color.Green;
-			}
-		}
-		public MyUIModStateText(bool enabled = true)
-		{
-			this._enabled = enabled;
-			this.PaddingLeft = (this.PaddingRight = 5f);
-			this.PaddingBottom = (this.PaddingTop = 10f);
-		}
-		public override void OnInitialize()
-		{
-			base.OnClick += delegate(UIMouseEvent evt, UIElement el)
-			{
-				if (this._enabled)
-				{
-					this.SetDisabled();
-					return;
-				}
-				this.SetEnabled();
-			};
-		}
-		public void SetEnabled()
-		{
-			this._enabled = true;
-			this.Recalculate();
-		}
-		public void SetDisabled()
-		{
-			this._enabled = false;
-			this.Recalculate();
-		}
-		public override void Recalculate()
-		{
-			Vector2 vector = new Vector2(Main.fontMouseText.MeasureString(this.DisplayText).X, 16f);
-			this.Width.Set(vector.X + this.PaddingLeft + this.PaddingRight, 0f);
-			this.Height.Set(vector.Y + this.PaddingTop + this.PaddingBottom, 0f);
-			base.Recalculate();
-		}
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
-			base.DrawSelf(spriteBatch);
-			this.DrawPanel(spriteBatch);
-			this.DrawEnabledText(spriteBatch);
-		}
-		private void DrawPanel(SpriteBatch spriteBatch)
-		{
-			Vector2 vector = base.GetDimensions().Position();
-			float pixels = this.Width.Pixels;
-			spriteBatch.Draw(UICommon.InnerPanelTexture, vector, new Rectangle?(new Rectangle(0, 0, 8, UICommon.InnerPanelTexture.Height)), Color.White);
-			spriteBatch.Draw(UICommon.InnerPanelTexture, new Vector2(vector.X + 8f, vector.Y), new Rectangle?(new Rectangle(8, 0, 8, UICommon.InnerPanelTexture.Height)), Color.White, 0f, Vector2.Zero, new Vector2((pixels - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-			spriteBatch.Draw(UICommon.InnerPanelTexture, new Vector2(vector.X + pixels - 8f, vector.Y), new Rectangle?(new Rectangle(16, 0, 8, UICommon.InnerPanelTexture.Height)), Color.White);
-		}
-		private void DrawEnabledText(SpriteBatch spriteBatch)
-		{
-			Vector2 pos = base.GetDimensions().Position() + new Vector2(this.PaddingLeft, this.PaddingTop * 0.5f);
-			Utils.DrawBorderString(spriteBatch, this.DisplayText, pos, this.DisplayColor, 1f, 0f, 0f, -1);
-		}
-		private bool _enabled;
-	}
 	public class Background : UIElement
 	{
 		public Background(Texture2D image)
@@ -115,8 +35,51 @@ namespace ElementMachine
 	{
 		public override void Load()
 		{
+			LoadElements();
 			On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
 			On.Terraria.Main.DrawMenu += Main_DrawMenuE;
+		}
+		public static Dictionary<string, int> ItemtoElements = new Dictionary<string, int>();
+		public static Dictionary<int, string> NumtoElements = new Dictionary<int, string>();
+		public void LoadElements()
+		{
+			NumtoElements.Add(-1, "None");
+			NumtoElements.Add(1, "Flame");
+			NumtoElements.Add(2, "Ice");
+			NumtoElements.Add(3, "Earth");
+			NumtoElements.Add(4, "Water");
+			NumtoElements.Add(5, "Nature");
+			ItemtoElements.Add("Frozen", 2);
+			ItemtoElements.Add("Desert", 3);
+			ItemtoElements.Add("DesertAttacker", 1);
+			ItemtoElements.Add("Ice", 2);
+			ItemtoElements.Add("StingerChakram", 5);
+			ItemtoElements.Add("VineChakram", 5);
+		}
+		public static int GetElement(string ItemName)
+		{
+			int check = 0;
+			int ret = -1;
+			foreach(var key in ItemtoElements.Keys)
+			{
+				if(ItemName.Contains(key)) 
+				{
+					if(check < key.Length)
+					{
+						ret = ItemtoElements[key];
+						check = key.Length;
+					}
+				}
+			}
+			return ret;
+		}
+		public static string GetElementName(int ElementNum)
+		{
+			foreach(var key in NumtoElements.Keys)
+			{
+				if(ElementNum == key) return NumtoElements[key];
+			}
+			return "";
 		}
 		public bool npcChatFocus4 = false;
 		public bool MouseLeft = false;
@@ -225,8 +188,8 @@ namespace ElementMachine
 						if(uiList._items[j].GetType().GetField("_mod", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiList._items[j]).ToString() == "ElementMachine")
 						{
 							object _mod = uiList._items[j].GetType().GetField("_mod", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiList._items[j]);
-							List<UIElement> myUIModItem = (List<UIElement>)uiList._items[j].GetType().GetField("Elements", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiList._items[j]);
-							if (!(myUIModItem[0] is Background))
+							List<UIElement> myUIElementItem = (List<UIElement>)uiList._items[j].GetType().GetField("Elements", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiList._items[j]);
+							if (!(myUIElementItem[0] is Background))
 							{
 								Background background = new Background(ModContent.GetTexture("ElementMachine/UI/ModBackGround"));
 								uiList._items[j].RemoveAllChildren();
@@ -234,9 +197,9 @@ namespace ElementMachine
 								uiList._items[j].GetType().GetField("_modIconAdjust", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(uiList._items[j], 0);
 								uiList._items[j].OnInitialize();
 								
-								for (int i = 0; i < myUIModItem.Count; i++)
+								for (int i = 0; i < myUIElementItem.Count; i++)
 								{
-									if (myUIModItem[i].ToString() == "Terraria.ModLoader.UI.UIModStateText")
+									if (myUIElementItem[i].ToString() == "Terraria.ModLoader.UI.UIModStateText")
 									{
 										
 									}
@@ -255,15 +218,6 @@ namespace ElementMachine
                 }
 			}
 			orig(self, gameTime);
-		}
-		public bool enable = true;
-		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)
-		{
-			Main.PlaySound(12, -1, -1, 1, 1f, 0f);
-			Type t = typeof(ModLoader);
-			MethodInfo method = t.GetMethod("SetModEnabled", BindingFlags.Static | BindingFlags.NonPublic);
-			method.Invoke(null, new object[]{ "ElementMachine", !enable });
-			enable = !enable;
 		}
 		public override void Unload()
 		{

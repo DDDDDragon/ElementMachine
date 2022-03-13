@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ElementMachine.Element.Ice
 {
-    public class FrozenStone : ModItem
+    public class FrozenStone : ElementItem
     {
         public override void SetStaticDefaults()
 		{
@@ -18,6 +18,8 @@ namespace ElementMachine.Element.Ice
 		}
         public override void SetDefaults()
 		{
+			
+			AddElement(ElementsType.Ice);
 			item.width = 16;
 			item.height = 18;
             item.maxStack = 999;

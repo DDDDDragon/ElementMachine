@@ -29,7 +29,7 @@ namespace ElementMachine.Tiles
             Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<AlloyAnalyzerItem>());
         }
     }
-    public class AlloyAnalyzerItem : ModItem
+    public class AlloyAnalyzerItem : MachineItem
     {
         public override void SetStaticDefaults()
         {

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ElementMachine.Machine
 {
-    public class EnergyCore : ModItem
+    public class EnergyCore : MachineItem
     {
         public override void SetStaticDefaults()
         {

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ElementMachine.Machine
 {
-    public class LifeCore : ModItem
+    public class LifeCore : MachineItem
     {
         public override void SetStaticDefaults()
         {

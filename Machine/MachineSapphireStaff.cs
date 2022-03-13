@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.Localization;
 namespace ElementMachine.Machine
 {
-	public class MachineSapphireStaff : ModItem
+	public class MachineSapphireStaff : MachineItem
 	{
 		public override void SetStaticDefaults()
 		{

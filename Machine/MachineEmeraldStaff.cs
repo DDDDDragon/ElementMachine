@@ -7,7 +7,7 @@ using Terraria.Localization;
 
 namespace ElementMachine.Machine
 {
-	public class MachineEmeraldStaff : ModItem
+	public class MachineEmeraldStaff : MachineItem
 	{
 		public override void SetStaticDefaults()
 		{

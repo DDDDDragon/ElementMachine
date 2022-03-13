@@ -21,7 +21,7 @@ namespace ElementMachine.Buffs
                 if(player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer == 0)
                 {
                     player.GetModPlayer<BuffPlayer>().JuniorAlloyNum--;
-                    player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer = 60;
+                    player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer = 120;
                 }
             }
         }

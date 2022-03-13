@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ElementMachine.Machine
 {
-    public class MagicLoop : ModItem
+    public class MagicLoop : MachineItem
     {
         public override void SetStaticDefaults()
         {

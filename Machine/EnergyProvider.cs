@@ -6,7 +6,7 @@ using ElementMachine.Tiles;
 
 namespace ElementMachine.Machine
 {
-	public class EnergyProvider : ModItem
+	public class EnergyProvider : MachineItem
 	{
 		public override void SetDefaults()
 		{

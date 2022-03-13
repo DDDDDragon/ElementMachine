@@ -8,7 +8,7 @@ using ElementMachine.Machine;
 
 namespace ElementMachine.Tiles
 {
-    public class ElementHoroScoper : ModTile
+    public class ElementHoroscoper : ModTile
     {
         public override void SetDefaults()
         {
@@ -22,20 +22,20 @@ namespace ElementMachine.Tiles
             TileObjectData.addTile(Type); 
 			AddMapEntry(new Color(126, 67, 0));
             ModTranslation name = CreateMapEntryName();
-            name.SetDefault("Element HoroScoper");
+            name.SetDefault("Element Horoscoper");
             disableSmartCursor = true;
         }
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<ElementHoroScoperItem>());
+            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<ElementHoroscoperItem>());
         }
     }
-    public class ElementHoroScoperItem : ModItem
+    public class ElementHoroscoperItem : ElementItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("ElementHoroScoper");
+            DisplayName.SetDefault("ElementHoroscoper");
             DisplayName.AddTranslation(GameCulture.Chinese, "元素星象仪");
             Tooltip.SetDefault("provide star's force for crafting element things\nusing for crafting many earlier stage things!");
             Tooltip.AddTranslation(GameCulture.Chinese, "为你前期的元素合成提供星象之力\n用于合成许多前期物品!");
@@ -51,7 +51,7 @@ namespace ElementMachine.Tiles
 			item.useTime = 10;
 			item.useStyle = 1;
 			item.consumable = true;
-			item.createTile = ModContent.TileType<ElementHoroScoper>();
+			item.createTile = ModContent.TileType<ElementHoroscoper>();
         }
         public override void AddRecipes()
         {

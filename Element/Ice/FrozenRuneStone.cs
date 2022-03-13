@@ -6,7 +6,7 @@ using ElementMachine.Tiles;
 
 namespace ElementMachine.Element.Ice
 {
-    public class FrozenRuneStone : ModItem
+    public class FrozenRuneStone : ElementItem
     {
         public override void SetStaticDefaults()
         {
@@ -18,6 +18,8 @@ namespace ElementMachine.Element.Ice
         }
         public override void SetDefaults()
         {
+            
+            AddElement(ElementsType.Ice);
             item.height = 26;
             item.width = 18;
             item.accessory = true;
@@ -40,7 +42,7 @@ namespace ElementMachine.Element.Ice
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
             recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 5);
-			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

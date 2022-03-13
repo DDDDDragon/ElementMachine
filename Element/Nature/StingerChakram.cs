@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ElementMachine.Element.Nature
 {
-    public class StingerChakram : ModItem
+    public class StingerChakram : ElementItem
     {
         public override void SetStaticDefaults() 
 		{   
@@ -41,7 +41,7 @@ namespace ElementMachine.Element.Nature
             recipe.AddIngredient(ModContent.ItemType<VineChakram>(), 1);
 			recipe.AddIngredient(ItemID.Stinger, 20);
             recipe.AddIngredient(ItemID.JungleSpores, 20);
-			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

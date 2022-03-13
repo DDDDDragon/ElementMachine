@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.Localization;
 namespace ElementMachine.Machine
 {
-	public class MachineRubyStaff : ModItem
+	public class MachineRubyStaff : MachineItem
 	{
 		public override void SetStaticDefaults()
 		{

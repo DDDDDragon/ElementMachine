@@ -7,7 +7,7 @@ using ElementMachine.Tiles;
 namespace ElementMachine.Element.Ice
 {
     [AutoloadEquip(EquipType.Head)]
-    public class FrozenProtectorHelmet : ModItem
+    public class FrozenProtectorHelmet : ElementItem
     {
         public override void SetStaticDefaults()
         {
@@ -24,6 +24,8 @@ namespace ElementMachine.Element.Ice
         }
         public override void SetDefaults()
         {
+            
+            AddElement(ElementsType.Ice);
             item.width = 22;
             item.height = 20;
             item.defense = 1;
@@ -38,7 +40,7 @@ namespace ElementMachine.Element.Ice
             recipe.AddIngredient(ItemID.SnowBlock, 20);
             recipe.AddIngredient(ItemID.SlushBlock, 20);
             recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 7);
-            recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
+            recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

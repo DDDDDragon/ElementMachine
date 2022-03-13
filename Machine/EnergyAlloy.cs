@@ -5,7 +5,7 @@ using ElementMachine.Tiles;
 
 namespace ElementMachine.Machine
 {
-    public class EnergyAlloy : ModItem
+    public class EnergyAlloy : MachineItem
     {
         public override void SetStaticDefaults()
         {

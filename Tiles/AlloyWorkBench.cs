@@ -32,7 +32,7 @@ namespace ElementMachine.Tiles
             Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<AlloyWorkBenchItem>());
         }
     }
-    public class AlloyWorkBenchItem : ModItem
+    public class AlloyWorkBenchItem : MachineItem
     {
         public override void SetStaticDefaults()
         {

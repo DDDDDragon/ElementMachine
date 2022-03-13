@@ -57,8 +57,7 @@ namespace ElementMachine.Command
             => "";
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            MyPlayer.AnalyzedItemsName.Clear();
-            MyPlayer.AnalyzedItemsValue.Clear();
+            MyPlayer.Oblations.Clear();
         }
     }
     public class Create : ModCommand

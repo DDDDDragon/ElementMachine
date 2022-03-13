@@ -6,7 +6,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace ElementMachine.Element.Nature
 {
-    public class VineChakram : ModItem
+    public class VineChakram : ElementItem
     {
         public override void SetStaticDefaults() 
 		{   
@@ -38,7 +38,7 @@ namespace ElementMachine.Element.Nature
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Vine, 5);
             recipe.AddRecipeGroup(RecipeGroupID.Wood, 20);
-			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

@@ -6,17 +6,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ElementMachine.Buffs;
 using ElementMachine.Tiles;
+using System.Collections.Generic;
 
 namespace ElementMachine.Element.Ice
 {
-	public class FrozenSpear : ModItem
+	public class FrozenSpear : ElementItem
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			DisplayName.SetDefault("FrozenSpear");
 			DisplayName.AddTranslation(GameCulture.Chinese, "霜寒长矛");
-			Tooltip.SetDefault("it's so cold\nleft click to channel and attack, right click to throw it as a Thrown Spear");
-			Tooltip.AddTranslation(GameCulture.Chinese, "冰冷刺骨\n左键蓄力刺出,右键可以当作投矛使用");
+			Tooltip.SetDefault("it's so cold\nleft click to channel and attack, right click to throw it as a Thrown Spear\nlower speed enemy when hit them");
+			Tooltip.AddTranslation(GameCulture.Chinese, "冰冷刺骨\n左键蓄力刺出,右键可以当作投矛使用\n击中敌人造成减速效果");
 		}
 
 		public override void SetDefaults()
@@ -38,6 +40,7 @@ namespace ElementMachine.Element.Ice
 			item.autoReuse = true;
 			item.UseSound = SoundID.Item1;
 			item.shoot = ModContent.ProjectileType<Frozenproj>();
+			this.Element = 2;
 		}
 		public override bool AltFunctionUse(Player player)
 		{
@@ -70,7 +73,7 @@ namespace ElementMachine.Element.Ice
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
 			recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 7);
-			recipe.AddTile(ModContent.TileType<ElementHoroScoper>());
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

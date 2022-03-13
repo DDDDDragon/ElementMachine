@@ -8,7 +8,7 @@ using ElementMachine.Tiles;
 namespace ElementMachine.Machine
 {
     [AutoloadEquip(EquipType.Head)]
-    public class EnergyAlloyHelmet : ModItem
+    public class EnergyAlloyHelmet : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -41,7 +41,7 @@ namespace ElementMachine.Machine
 		}
     }
     [AutoloadEquip(EquipType.Body)]
-    public class EnergyAlloyArmor : ModItem
+    public class EnergyAlloyArmor : MachineItem
     {
         public override void SetStaticDefaults()
         {
@@ -86,7 +86,7 @@ namespace ElementMachine.Machine
         }
     }
     [AutoloadEquip(EquipType.Legs)]
-    public class EnergyAlloyCuisse : ModItem
+    public class EnergyAlloyCuisse : MachineItem
     {
         public override void SetStaticDefaults()
         {
