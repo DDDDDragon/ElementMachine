@@ -22,7 +22,7 @@ namespace ElementMachine.Element.Flame
 			item.rare = ItemRarityID.Blue;
 		}
 	}
-    	public class AntlionBones : ElementItem
+    public class AntlionBones : ElementItem
     {
 		public override void SetStaticDefaults()
 		{

@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using ElementMachine.Element.Ice;
+using ElementMachine.Element.Ice.Frozen;
 using Terraria.ID;
 using ElementMachine.Tiles;
 

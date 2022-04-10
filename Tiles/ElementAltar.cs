@@ -8,7 +8,7 @@ using ElementMachine.Machine;
 using Terraria.DataStructures;
 using ElementMachine.Oblation;
 using Microsoft.Xna.Framework.Graphics;
-using ElementMachine.Element.Ice;
+using ElementMachine.Element.Ice.Frozen;
 
 namespace ElementMachine.Tiles
 {

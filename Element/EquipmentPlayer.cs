@@ -33,8 +33,20 @@ namespace ElementMachine.Element
         public override void ResetEffects()
         {
             base.ResetEffects();
+            SandCracker = false;
             FrozenProtector = false;
             AntlionDash = false;
+        }
+        public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+        {
+            if(SandCracker) 
+            {
+                if(Main.rand.Next(0, 11) == 0)
+                {
+                    target.AddBuff(ModContent.BuffType<Dizziness>(), 60);
+                }
+            }
+            base.OnHitNPC(item, target, damage, knockback, crit);
         }
         DateTime AdateTime = new DateTime();
         DateTime DdateTime = new DateTime();
@@ -140,6 +152,7 @@ namespace ElementMachine.Element
                 if(String.Concat(i) == Main.cRight) pressedD = true;
             }
         }
+        public static bool SandCracker = false;
         public static bool FrozenProtector = false;//霜寒守卫者
         public bool AntlionDash = false;//荒漠突袭者
         public bool AntlionDashRightStage = false;

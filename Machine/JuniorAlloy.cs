@@ -33,9 +33,9 @@ namespace ElementMachine.Machine
             recipe.AddRecipe();
 
             BlueprintRecipe blueprintRecipe = new BlueprintRecipe(mod);
-            blueprintRecipe.AddIngredient(this, 1);
+            blueprintRecipe.AddIngredient(this, 10);
             blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
-            blueprintRecipe.SetResult(this);
+            blueprintRecipe.SetResult(this, 10);
             blueprintRecipe.AddRecipe();
         }
     }

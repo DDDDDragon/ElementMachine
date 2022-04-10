@@ -50,7 +50,7 @@ namespace ElementMachine.Element.Flame
 		}
         public override void SetSprite(string a)
         {
-            base.SetSprite("ElementMachine/Element/Earth/DesertAttackerChainSickleChain");
+            base.SetSprite("ElementMachine/Element/Flame/DesertAttackerChainSickleChain");
         }
         public override void Effect()
         {

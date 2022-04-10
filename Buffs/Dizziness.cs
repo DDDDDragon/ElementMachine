@@ -10,11 +10,16 @@ namespace ElementMachine.Buffs
         {
             DisplayName.SetDefault("Dizziness");
             DisplayName.AddTranslation(GameCulture.Chinese, "眩晕");
+            Description.SetDefault("⭐");
         }
         public override void Update(Player player, ref int buffIndex) 
         {
-            player.buffTime[buffIndex] = 0;
             player.moveSpeed = 0;
+        }
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+            npc.velocity *= 0f;
+            base.Update(npc, ref buffIndex);
         }
     }
 }

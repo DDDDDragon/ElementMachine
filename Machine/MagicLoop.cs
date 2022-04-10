@@ -2,6 +2,7 @@ using ElementMachine.Tiles;
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ElementMachine.Recipe;
 
 namespace ElementMachine.Machine
 {
@@ -30,6 +31,12 @@ namespace ElementMachine.Machine
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
             recipe.SetResult(this, 10);
             recipe.AddRecipe();
+
+            BlueprintRecipe blueprintRecipe = new BlueprintRecipe(mod);
+            blueprintRecipe.AddIngredient(this, 20);
+            blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
+            blueprintRecipe.SetResult(this, 20);
+            blueprintRecipe.AddRecipe();
         }
     }
 }

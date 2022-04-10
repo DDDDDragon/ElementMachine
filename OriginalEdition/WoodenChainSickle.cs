@@ -23,7 +23,7 @@ namespace ElementMachine.OriginalEdition
 		public override void AddRecipes()
 		{
 			var recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Wood, 20);
+            recipe.AddRecipeGroup("Wood", 20);
 			recipe.AddIngredient(ItemID.Chain, 1);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this);

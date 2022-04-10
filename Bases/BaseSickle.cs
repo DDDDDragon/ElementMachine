@@ -19,7 +19,9 @@ namespace ElementMachine.Bases
             DisplayName.SetDefault(defaultName);
             DisplayName.AddTranslation(GameCulture.Chinese, transName);
 			Tooltip.SetDefault("shoot a chain blade and keep it on the first enemy it hits ");
-			Tooltip.AddTranslation(GameCulture.Chinese, "[c/00FF00:「钩镰」]\n发射一个链刃并钩住第一个它命中的敌人,松开左键会收回\n若敌人超出160码则不会钩住\n每次钩中敌人可以增加一点命中点数\n每次钩中敌人时按右键可以向鼠标方向位移一段距离,位移期间无敌\n若你与敌人的距离大于160码则敌人会向你的方向同时位移更小的一段距离\n若位移未结束前收回钩镰会进行一次超远距离跳跃\n[c/8c6640:「特效」]\n钩镰存在时,按下E键," + Effect);
+			string trans = "[c/00FF00:「钩镰」]\n发射一个链刃并钩住第一个它命中的敌人,松开左键会收回\n若敌人超出160码则不会钩住\n每次钩中敌人可以增加一点命中点数\n每次钩中敌人时按右键可以向鼠标方向位移一段距离,位移期间无敌\n若你与敌人的距离大于160码则敌人会向你的方向同时位移更小的一段距离\n若位移未结束前收回钩镰会进行一次超远距离跳跃\n[c/8c6640:「特效」]\n";
+			if(press) trans += "钩镰存在时,按下E键,";
+			Tooltip.AddTranslation(GameCulture.Chinese, trans + Effect);
         }
 		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) 
 		{
@@ -42,6 +44,7 @@ namespace ElementMachine.Bases
 			}
 			return true;
 		}
+		public bool press = true;
 		public string defaultName = " ";
 		public string transName = " ";
 		public string Effect = " ";
@@ -195,12 +198,14 @@ namespace ElementMachine.Bases
             }
 			if(HitTimer < 600 && HitTimer > 0 && Target != new NPC() && Target.life >= 0 && player.channel && Target.type != NPCID.TargetDummy && !Target.immortal) 
 			{
-                if(CanAdd) 
-                {
-                    Main.LocalPlayer.GetModPlayer<BasePlayer>().SicklePoint++;
-                    CombatText.NewText(player.getRect(), Color.Blue, Main.LocalPlayer.GetModPlayer<BasePlayer>().SicklePoint);
-                    CanAdd = false;
-                }
+				if(HitTimer % 60 == 0)
+				{
+					if(Main.LocalPlayer.GetModPlayer<BasePlayer>().SicklePoint < 30)
+					{
+						Main.LocalPlayer.GetModPlayer<BasePlayer>().SicklePoint++;
+                    	CombatText.NewText(player.getRect(), Color.Blue, Main.LocalPlayer.GetModPlayer<BasePlayer>().SicklePoint);
+					}
+				}
                 if(Main.mouseRight) mouseRight = true;
 				if(Keyboard.GetState().IsKeyDown(Keys.E)) E = true;
 				if(Keyboard.GetState().IsKeyUp(Keys.E) && E) 

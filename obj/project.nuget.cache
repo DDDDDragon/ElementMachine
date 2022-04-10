@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qjse1Catrm67xitzrZOhKqEsWwfTuhMLGVCzY4Z77wwDBXENiIMIw87AozM5is/huMzbLwIoHasFTyPNMcw94w==",
+  "dgSpecHash": "OHxvVidQzl3rM4WKvoBWGPMerzi8sdMuRUG5UVnNRh28PMlC7X6vD/2/Se33aNnyVa+Du7Tkg0E0IXtSY57V6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ASUS\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\ElementMachine\\ElementMachine.csproj",
+  "projectFilePath": "c:\\Users\\ASUS\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\ElementMachine\\ElementMachine.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\tmodloader.codeassist\\0.1.3\\tmodloader.codeassist.0.1.3.nupkg.sha512"
   ],

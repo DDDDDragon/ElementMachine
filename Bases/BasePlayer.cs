@@ -12,10 +12,23 @@ namespace ElementMachine.Bases
     {
         public int SicklePoint = 0;
         public float SickleDamagePer = 0f;
+        public float ShieldSpearDefensePer = 1.1f;
+        public int ShieldSpearExtraDefense = 1;
         public override void ResetEffects()
         {
             base.ResetEffects();
             SickleDamagePer = 0f;
+            ShieldSpearDefensePer = 1.1f;
+            ShieldSpearExtraDefense = 1;
+        }
+        public override void PostUpdateEquips()
+        {
+            base.PostUpdateEquips();
+            foreach(var i in Main.projectile)
+            {
+                if(i.modProjectile is BaseShieldSpearProjS && i.active) player.statDefense = (int)(player.statDefense * ShieldSpearDefensePer) + ShieldSpearExtraDefense;
+            }
+            
         }
     }
 }

@@ -43,6 +43,8 @@ namespace ElementMachine
 		public static Dictionary<int, string> NumtoElements = new Dictionary<int, string>();
 		public void LoadElements()
 		{
+			ItemtoElements.Clear();
+			NumtoElements.Clear();
 			NumtoElements.Add(-1, "None");
 			NumtoElements.Add(1, "Flame");
 			NumtoElements.Add(2, "Ice");
@@ -55,6 +57,8 @@ namespace ElementMachine
 			ItemtoElements.Add("Ice", 2);
 			ItemtoElements.Add("StingerChakram", 5);
 			ItemtoElements.Add("VineChakram", 5);
+			ItemtoElements.Add("SandCracker", 3);
+			ItemtoElements.Add("Sand", 3);
 		}
 		public static int GetElement(string ItemName)
 		{
