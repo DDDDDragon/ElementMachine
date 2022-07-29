@@ -12,19 +12,17 @@ namespace ElementMachine.Element.Ice.Frozen
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("FrozenStone");
-			DisplayName.AddTranslation(GameCulture.Chinese, "霜寒石");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "霜寒石");
 			Tooltip.SetDefault("it's so cold");
-			Tooltip.AddTranslation(GameCulture.Chinese, "冰冷刺骨");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "冰冷刺骨");
 		}
         public override void SetDefaults()
 		{
-			
-			AddElement(ElementsType.Ice);
-			item.width = 16;
-			item.height = 18;
-            item.maxStack = 999;
-			item.value = 10;
-			item.rare = ItemRarityID.Blue;
+			Item.width = 16;
+			Item.height = 18;
+            Item.maxStack = 999;
+			Item.value = 10;
+			Item.rare = ItemRarityID.Blue;
 		}
     }
 }

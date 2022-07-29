@@ -1,7 +1,8 @@
-using ElementMachine.Recipe;
+using ElementMachine.MyRecipe;
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 using ElementMachine.Tiles;
 
 namespace ElementMachine.Machine
@@ -11,32 +12,37 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("JuniorAlloy");
-            DisplayName.AddTranslation(GameCulture.Chinese, "初级合金");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "初级合金");
             Tooltip.SetDefault("In fact, Iron + Copper = nothing");
-            Tooltip.AddTranslation(GameCulture.Chinese, "实际上, 铁和铜合在一起什么也不是");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "实际上, 铁和铜合在一起什么也不是");
         }
         public override void SetDefaults()
         {
-            item.width = 30;
-			item.height = 24;
-			item.maxStack = 999;
-			item.value = 100;
-			item.rare = ItemRarityID.Blue;
+            Item.width = 30;
+			Item.height = 24;
+			Item.maxStack = 999;
+			Item.value = 100;
+			Item.rare = ItemRarityID.Blue;
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.IronBar, 1);
+            Recipe recipe = CreateRecipe();
+            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 1);
             recipe.AddIngredient(ItemID.CopperBar, 1);
             recipe.AddTile(TileID.Furnaces);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            BlueprintRecipe blueprintRecipe = new BlueprintRecipe(mod);
+            recipe.Register();
+            Recipe recipe2 = CreateRecipe();
+            recipe2.AddRecipeGroup(RecipeGroupID.IronBar, 1);
+            recipe2.AddIngredient(ItemID.TinBar, 1);
+            recipe2.AddTile(TileID.Furnaces);
+            recipe2.Register();
+            Recipe blueprintRecipe = CreateRecipe(10);
             blueprintRecipe.AddIngredient(this, 10);
             blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
-            blueprintRecipe.SetResult(this, 10);
-            blueprintRecipe.AddRecipe();
+            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item){
+                BlueprintRecipe.OnCraft(recipe, item);
+            });
+            blueprintRecipe.Register();
         }
     }
 }

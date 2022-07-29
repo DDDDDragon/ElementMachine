@@ -13,26 +13,24 @@ namespace ElementMachine.Element.Ice.Frozen
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("FrozenProtectorArmor");
-            DisplayName.AddTranslation(GameCulture.Chinese, "霜寒守卫者胸甲");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "霜寒守卫者胸甲");
             Tooltip.SetDefault("increase 5% melee damage");
-            Tooltip.AddTranslation(GameCulture.Chinese, "增加5%的近战伤害");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "增加5%的近战伤害");
             base.SetStaticDefaults();
         }
         public override string Texture => base.Texture;
         public override void SetDefaults()
         {
-            
-            AddElement(ElementsType.Ice);
-            item.width = 34;
-            item.height = 18;
-            item.defense = 2;
-            item.rare = ItemRarityID.Blue;
-            item.value = 2000;
+            Item.width = 34;
+            Item.height = 18;
+            Item.defense = 2;
+            Item.rare = ItemRarityID.Blue;
+            Item.value = 2000;
             base.SetDefaults();
         }
         public override void UpdateEquip(Player player)
         {
-            player.meleeDamage += 0.05f;
+            player.GetDamage(DamageClass.Melee) += 0.05f;
             base.UpdateEquip(player);
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -48,22 +46,22 @@ namespace ElementMachine.Element.Ice.Frozen
             }
             player.GetModPlayer<BasePlayer>().ShieldSpearDefensePer += 0.1f;
             player.GetModPlayer<BasePlayer>().ShieldSpearExtraDefense += 1;
-            player.meleeDamage += 0.03f;
-            player.meleeCrit += 3;
+            player.GetDamage(DamageClass.Melee) += 0.03f;
+            player.GetCritChance(DamageClass.Melee) += 3;
             player.statDefense += 1;
             EquipmentPlayer.FrozenProtector = true;
             base.UpdateArmorSet(player);
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.IceBlock, 30);
             recipe.AddIngredient(ItemID.SnowBlock, 30);
             recipe.AddIngredient(ItemID.SlushBlock, 30);
             recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 10);
             recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            
+            recipe.Register();
         }
     }
 }

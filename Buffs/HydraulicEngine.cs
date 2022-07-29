@@ -6,17 +6,17 @@ namespace ElementMachine.Buffs
 {
     public class HydraulicEngine : ModBuff 
     {
-        public override void SetDefaults() 
+        public override void SetStaticDefaults() 
         {
             DisplayName.SetDefault("HydraulicEngine");
-            DisplayName.AddTranslation(GameCulture.Chinese, "液压引擎");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "液压引擎");
         }
         public override void Update(Player player, ref int buffIndex) 
         {   
             if(player.GetModPlayer<BuffPlayer>().JuniorAlloyNum > 0)
             {
                 player.buffTime[buffIndex] = 2;
-                player.allDamage += 0.03f * player.GetModPlayer<BuffPlayer>().JuniorAlloyNum;
+                player.GetDamage(DamageClass.Generic) += 0.03f * player.GetModPlayer<BuffPlayer>().JuniorAlloyNum;
                 player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer--;
                 if(player.GetModPlayer<BuffPlayer>().JuniorAlloyTimer == 0)
                 {

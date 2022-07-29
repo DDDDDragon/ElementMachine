@@ -6,10 +6,10 @@ namespace ElementMachine.Bases
 {
     public class BaseGlobalItem : GlobalItem
     {
-        public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
-            base.ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
-            if(item.modItem != null && item.modItem is BaseSickleItem) add += Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer;  
+            base.ModifyWeaponDamage(item, player, ref damage);
+            if (item.ModItem != null && item.ModItem is BaseSickleItem) damage += Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer;
         }
     }
 }

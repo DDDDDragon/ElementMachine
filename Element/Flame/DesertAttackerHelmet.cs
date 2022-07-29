@@ -13,9 +13,9 @@ namespace ElementMachine.Element.Flame
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("DesertAttackerHelmet");
-			DisplayName.AddTranslation(GameCulture.Chinese, "荒漠突袭者角盔");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "荒漠突袭者角盔");
 			Tooltip.SetDefault("As hard as Antlion\nincrease 1 defense");
-			Tooltip.AddTranslation(GameCulture.Chinese, "和蚁狮一样硬\n提高1点防御力");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "和蚁狮一样硬\n提高1点防御力");
 		}
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
@@ -25,7 +25,7 @@ namespace ElementMachine.Element.Flame
 		{
 			player.setBonus = "允许冲刺,撞到敌人时造成少量伤害\n提高10%钩镰伤害\n在沙漠时提高5%近战伤害";
             Main.LocalPlayer.GetModPlayer<EquipmentPlayer>().AntlionDash = true;
-			Main.LocalPlayer.meleeDamage += 0.05f;
+			Main.LocalPlayer.GetDamage(DamageClass.Melee) += 0.05f;
 			Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer += 0.1f;
 		}
 		public override void UpdateEquip(Player player)
@@ -35,20 +35,20 @@ namespace ElementMachine.Element.Flame
         }
         public override void SetDefaults()
 		{
-			item.width = 26;
-			item.height = 30;
-			item.value = 1000;
-			item.rare = ItemRarityID.Blue;
-			item.defense = 1;
+			Item.width = 26;
+			Item.height = 30;
+			Item.value = 1000;
+			Item.rare = ItemRarityID.Blue;
+			Item.defense = 1;
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AntlionCarapace>(), 15);
             recipe.AddIngredient(ItemID.SandBlock, 15);
             recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
 	}
 }

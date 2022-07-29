@@ -11,7 +11,7 @@ namespace ElementMachine.Buffs
 {
     public class lowerSpeed : ModBuff 
     {
-        public override void SetDefaults() 
+        public override void SetStaticDefaults() 
         {
             DisplayName.SetDefault("减速");
             Description.SetDefault("冰冷刺骨");

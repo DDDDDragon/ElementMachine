@@ -26,7 +26,7 @@ namespace ElementMachine.Bases
             base.PostUpdateEquips();
             foreach(var i in Main.projectile)
             {
-                if(i.modProjectile is BaseShieldSpearProjS && i.active) player.statDefense = (int)(player.statDefense * ShieldSpearDefensePer) + ShieldSpearExtraDefense;
+                if(i.ModProjectile is BaseShieldSpearProjS && i.active) Player.statDefense = (int)(Player.statDefense * ShieldSpearDefensePer) + ShieldSpearExtraDefense;
             }
             
         }

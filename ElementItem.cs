@@ -12,76 +12,60 @@ using System.Linq;
 using ElementMachine.Oblation;
 using Terraria.ModLoader.IO;
 using System.Reflection;
+using Terraria.GameContent;
 
 namespace ElementMachine
 {
-    public enum ElementsType
-    {
-        None = -1,
-        Flame,
-        Ice,
-        Earth,
-        Water,
-        Nature
-    }
     public abstract class ElementItem : ModItem
     {
-        /// <summary>
-        /// 物品的元素,为一个list
-        /// </summary>
-        public List<ElementsType> elementsType = Enum.GetValues(typeof(ElementsType)).Cast<ElementsType>().ToList();
-        public int Element = 0;
-        public virtual void PreAddElement(){}
-        public virtual void PostAddElement(){}
-        public virtual void SetElement(){}
-        public void AddElement(ElementsType element)
-		{
-            PreAddElement();
-            PostAddElement();
-		}
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
             base.PostDrawTooltipLine(line);
         }
         public override void SetStaticDefaults()
         {
-            SetElement();
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
         {
-            SetElement();
             base.SetDefaults();
         }
     }
     public class ElementGlobalItem : GlobalItem
     {
-        private void InsertElementalTooltip(List<TooltipLine> tooltips, int index, bool none = true)
+        private void InsertElementalTooltip(List<TooltipLine> tooltips, int index, Item item, bool none = true)
 		{
-			TooltipLine tooltipLine = new TooltipLine(base.mod, "EAM:Elemental", GameCulture.Chinese.IsActive ? "元素属性: " : "Element:");
+			TooltipLine tooltipLine = new TooltipLine(base.Mod, "EAM:Elemental", GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "元素属性: " : "Element:");
+            TooltipLine tooltipLine2 = new TooltipLine(base.Mod, "EAM:Derivation", GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "派生: " : "Derivation:");
 			if(none)
 			{
-				tooltipLine.text += (GameCulture.Chinese.IsActive ? "无" : "None");
+				tooltipLine.Text += (GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "无" : "None");
 			}
+            if(ElementMachine.GetDerivation(item.ModItem.Name) != -1)
+            {
+                tooltipLine2.Text += ElementMachine.GetDerivationName(ElementMachine.GetDerivation(item.ModItem.Name));
+            }
+            else tooltipLine2.Text += (GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "无" : "None");
 			tooltips.Insert(index, tooltipLine);
+            if(item.damage > 0) tooltips.Insert(index, tooltipLine2);
 		}
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if(item.modItem is ElementItem || item.modItem is OblationCore)
+            if(item.ModItem is ElementItem || item.ModItem is OblationCore)
             {
                 int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if(num != -1) 
                 {
-                    if(ElementMachine.GetElement(item.modItem.Name) == -1) this.InsertElementalTooltip(tooltips, num + 1);
-                    else this.InsertElementalTooltip(tooltips, num + 1, false);
+                    if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num + 1, item);
+                    else this.InsertElementalTooltip(tooltips, num + 1, item, false);
                 }
                 else if((item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1) && !item.vanity)
                 {
                     int num2 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Defense"));
                     if(num2 != -1) 
                     {
-                        if(ElementMachine.GetElement(item.modItem.Name) == -1) this.InsertElementalTooltip(tooltips, num2 + 1);
-                        else this.InsertElementalTooltip(tooltips, num2 + 1, false);
+                        if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num2 + 1, item);
+                        else this.InsertElementalTooltip(tooltips, num2 + 1, item, false);
                     }
                 }
                 else
@@ -89,8 +73,8 @@ namespace ElementMachine
                     int num3 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
                     if(num3 != -1)
                     {
-                        if(ElementMachine.GetElement(item.modItem.Name) == -1) this.InsertElementalTooltip(tooltips, num3 + 1);
-                        else this.InsertElementalTooltip(tooltips, num3 + 1, false);
+                        if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num3 + 1, item);
+                        else this.InsertElementalTooltip(tooltips, num3 + 1, item, false);
                     }
                 }
             }
@@ -99,22 +83,22 @@ namespace ElementMachine
         
         public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
         {
-            Texture2D texture = ModContent.GetTexture("ElementMachine/UI/TooltipBackground");
+            Texture2D texture = ModContent.Request<Texture2D>("ElementMachine/UI/TooltipBackground").Value;
             int num = 0;
 			int num2 = 0;
 			foreach (TooltipLine tooltipLine in lines)
 			{
 				if (tooltipLine.Name.Equals("EAM:Elemental"))
 				{
-					num = Math.Max(num, (int)ChatManager.GetStringSize(Main.fontMouseText, tooltipLine.text, new Vector2(1f, 1f), -1f).X + 30 + 15);
+					num = Math.Max(num, (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, tooltipLine.Text, new Vector2(1f, 1f), -1f).X + 30 + 15);
 				}
-				foreach (string text in tooltipLine.text.Split(new char[]
+				foreach (string text in tooltipLine.Text.Split(new char[]
 				{
 					'\n'
 				}))
 				{
-					num = Math.Max(num, (int)ChatManager.GetStringSize(Main.fontMouseText, text, new Vector2(1f, 1f), -1f).X);
-					num2 += (int)Main.fontMouseText.MeasureString("中").Y;
+					num = Math.Max(num, (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f, 1f), -1f).X);
+					num2 += (int)FontAssets.MouseText.Value.MeasureString("中").Y;
 				}
 			}
 			if (x + num + 12 > Main.screenWidth)
@@ -132,12 +116,12 @@ namespace ElementMachine
         {
             if (line.Name.Equals("EAM:Elemental"))
 			{
-				Vector2 position = new Vector2((float)(line.X + (int)ChatManager.GetStringSize(Main.fontMouseText, line.text, new Vector2(1f, 1f), -1f).X), line.Y);
+				Vector2 position = new Vector2((float)(line.X + (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, line.Text, new Vector2(1f, 1f), -1f).X), line.Y);
                 string num = "";
-                if(ElementMachine.GetElement(item.modItem.Name) != -1)
+                if(ElementMachine.GetElement(item.ModItem.Name) != -1)
                 {
-                    num = ElementMachine.GetElementName(ElementMachine.GetElement(item.modItem.Name));
-                    Main.spriteBatch.Draw(ModContent.GetTexture($"ElementMachine/Element/{num}Icon"), position, Color.White);
+                    num = ElementMachine.GetElementName(ElementMachine.GetElement(item.ModItem.Name));
+                    Main.spriteBatch.Draw(ModContent.Request<Texture2D>($"ElementMachine/Element/{num}Icon").Value, position, Color.White);
                     
                 }
                 

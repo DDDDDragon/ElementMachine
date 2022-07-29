@@ -12,17 +12,17 @@ namespace ElementMachine.Element.Flame
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("DesertAttackerCuisse");
-			DisplayName.AddTranslation(GameCulture.Chinese, "荒漠突袭者腿甲");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "荒漠突袭者腿甲");
 			Tooltip.SetDefault("As hard as Antlion\nincrease move speed");
-			Tooltip.AddTranslation(GameCulture.Chinese, "和蚁狮一样硬\n提高移速");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "和蚁狮一样硬\n提高移速");
 		}
         public override void SetDefaults()
 		{
-			item.width = 22;
-			item.height = 18;
-			item.value = 1000;
-			item.rare = ItemRarityID.Blue;
-			item.defense = 2;
+			Item.width = 22;
+			Item.height = 18;
+			Item.value = 1000;
+			Item.rare = ItemRarityID.Blue;
+			Item.defense = 2;
 		}		
 		public override void UpdateEquip(Player player)
         {
@@ -31,12 +31,12 @@ namespace ElementMachine.Element.Flame
         }
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AntlionCarapace>(), 15);
             recipe.AddIngredient(ItemID.SandBlock, 15);
             recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
 	}
 }

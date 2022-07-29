@@ -20,17 +20,16 @@ namespace ElementMachine.Element.Flame
             Effect = "消耗5点命中点数获得三秒钟加速";
             shootType = ModContent.ProjectileType<DesertAttackerChainSickleProj>();
             shootSpeed = 18.5f;
-            item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Blue;
             base.SetSickle();
         }
         public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AntlionCarapace>(), 20);
             recipe.AddIngredient(ItemID.SandBlock, 20);
             recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+            recipe.Register();
 		}
     }
     public class DesertAttackerChainSickleProj : BaseSickle
@@ -41,12 +40,12 @@ namespace ElementMachine.Element.Flame
 		}
 		public override void SetDefaults()
 		{
-			projectile.width = 46;
-			projectile.height = 28;
-			projectile.friendly = true;
-			projectile.penetrate = -1;
-			projectile.melee = true;
-            projectile.knockBack = 0;
+			Projectile.width = 46;
+			Projectile.height = 28;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.DamageType = DamageClass.Melee;
+            Projectile.knockBack = 0;
 		}
         public override void SetSprite(string a)
         {

@@ -1,4 +1,3 @@
-using ElementMachine.Recipe;
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria;
@@ -13,9 +12,9 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("EnergyAlloyHelmet");
-            DisplayName.AddTranslation(GameCulture.Chinese, "能量合金头盔");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "能量合金头盔");
             Tooltip.SetDefault("it can even emit Green light! fucking cool!\nincrease 15 max life\nthis suit's code is not complete");
-            Tooltip.AddTranslation(GameCulture.Chinese, "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
         }
         public override void UpdateEquip(Player player)
         {
@@ -24,20 +23,20 @@ namespace ElementMachine.Machine
         }
         public override void SetDefaults()
 		{
-			item.width = 40;
-			item.height = 24;
-			item.value = 10;
-			item.rare = ItemRarityID.Green;
-			item.defense = 5;
+			Item.width = 40;
+			Item.height = 24;
+			Item.value = 10;
+			Item.rare = ItemRarityID.Green;
+			Item.defense = 5;
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<EnergyAlloy>(), 25);
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 25);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
     }
     [AutoloadEquip(EquipType.Body)]
@@ -46,9 +45,9 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("EnergyAlloyArmor");
-            DisplayName.AddTranslation(GameCulture.Chinese, "能量合金战装");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "能量合金战装");
             Tooltip.SetDefault("it can even emit Green light! fucking cool!\nincrease 15 max life\nthis suit's code is not complete");
-            Tooltip.AddTranslation(GameCulture.Chinese, "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
         }
         public override void UpdateEquip(Player player)
         {
@@ -57,20 +56,20 @@ namespace ElementMachine.Machine
         }
         public override void SetDefaults()
 		{
-			item.width = 40;
-			item.height = 24;
-			item.value = 10;
-			item.rare = ItemRarityID.Green;
-			item.defense = 6;
+			Item.width = 40;
+			Item.height = 24;
+			Item.value = 10;
+			Item.rare = ItemRarityID.Green;
+			Item.defense = 6;
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<EnergyAlloy>(), 30);
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 30);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
@@ -78,9 +77,9 @@ namespace ElementMachine.Machine
         }
         public override void UpdateArmorSet(Player player)
         {
-            if(GameCulture.Chinese.IsActive) player.setBonus = "这套套装还没有开发完毕";
+            if(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive) player.setBonus = "这套套装还没有开发完毕";
             else player.setBonus = "this suit's code is not complete";
-            player.allDamage += 0.08f;
+            player.GetDamage(DamageClass.Generic) += 0.08f;
             player.statDefense += 1;
             base.UpdateArmorSet(player);
         }
@@ -91,9 +90,9 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("EnergyAlloyCuisse");
-            DisplayName.AddTranslation(GameCulture.Chinese, "能量合金腿甲");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "能量合金腿甲");
             Tooltip.SetDefault("it can even emit Green light! fucking cool!\nincrease 15 max life\nthis suit's code is not complete");
-            Tooltip.AddTranslation(GameCulture.Chinese, "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "这不高级多了,还tm会发蓝光!\n增加15点最大生命值\n这套套装还没有开发完毕");
         }
         public override void UpdateEquip(Player player)
         {
@@ -102,20 +101,20 @@ namespace ElementMachine.Machine
         }
         public override void SetDefaults()
 		{
-			item.width = 40;
-			item.height = 24;
-			item.value = 10;
-			item.rare = ItemRarityID.Green;
-			item.defense = 5;
+			Item.width = 40;
+			Item.height = 24;
+			Item.value = 10;
+			Item.rare = ItemRarityID.Green;
+			Item.defense = 5;
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<EnergyAlloy>(), 25);
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 25);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
     }
 }

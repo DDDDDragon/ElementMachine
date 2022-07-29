@@ -2,7 +2,8 @@ using ElementMachine.Tiles;
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ElementMachine.Recipe;
+using Terraria;
+using ElementMachine.MyRecipe;
 
 namespace ElementMachine.Machine
 {
@@ -11,32 +12,34 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("MagicLoop");
-            DisplayName.AddTranslation(GameCulture.Chinese, "魔力回路");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "魔力回路");
             Tooltip.SetDefault("the dust of fallen star, can help transport mana");
-            Tooltip.AddTranslation(GameCulture.Chinese, "坠落之星的粉尘, 可以帮助你传输魔力");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "坠落之星的粉尘, 可以帮助你传输魔力");
         }
         public override void SetDefaults()
         {
-            item.width = 22;
-			item.height = 30;
-			item.maxStack = 999;
-			item.value = 1000;
-			item.rare = ItemRarityID.Blue;
+            Item.width = 22;
+			Item.height = 30;
+			Item.maxStack = 999;
+			Item.value = 1000;
+			Item.rare = ItemRarityID.Blue;
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe(10);
             recipe.AddIngredient(ItemID.FallenStar, 1);
             recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 1);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-            recipe.SetResult(this, 10);
-            recipe.AddRecipe();
+            recipe.Register();
 
-            BlueprintRecipe blueprintRecipe = new BlueprintRecipe(mod);
+            Recipe blueprintRecipe = CreateRecipe(20);
             blueprintRecipe.AddIngredient(this, 20);
             blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
-            blueprintRecipe.SetResult(this, 20);
-            blueprintRecipe.AddRecipe();
+            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item)
+            {
+                BlueprintRecipe.OnCraft(recipe, item);
+            });
+            blueprintRecipe.Register();
         }
     }
 }

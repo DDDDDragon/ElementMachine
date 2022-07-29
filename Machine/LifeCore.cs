@@ -2,6 +2,7 @@
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 
 namespace ElementMachine.Machine
 {
@@ -10,40 +11,36 @@ namespace ElementMachine.Machine
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("LifeCore");
-            DisplayName.AddTranslation(GameCulture.Chinese, "生命核心");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "生命核心");
             Tooltip.SetDefault("Completely life!");
-            Tooltip.AddTranslation(GameCulture.Chinese, "从浓缩生命力中提取出的纯粹能量");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "从浓缩生命力中提取出的纯粹能量");
         }
         public override void SetDefaults()
         {
-            item.width = 30;
-            item.height = 24;
-            item.maxStack = 999;
-            item.value = 1000;
-            item.rare = ItemRarityID.Blue;
+            Item.width = 30;
+            Item.height = 24;
+            Item.maxStack = 999;
+            Item.value = 1000;
+            Item.rare = ItemRarityID.Blue;
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.HealingPotion, 10);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-            ModRecipe recipe1 = new ModRecipe(mod);
+            recipe.Register();
+            Recipe recipe1 = CreateRecipe();
             recipe1.AddIngredient(ItemID.LesserHealingPotion, 20);
             recipe1.AddTile(ModContent.TileType<AlloyWorkBench>());
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-            ModRecipe recipe2 = new ModRecipe(mod);
+            recipe1.Register();
+            Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ItemID.SuperHealingPotion, 1);
             recipe2.AddTile(ModContent.TileType<AlloyWorkBench>());
-            recipe2.SetResult(this);
-            recipe2.AddRecipe();
-            ModRecipe recipe3 = new ModRecipe(mod);
+            recipe2.Register();
+            Recipe recipe3 = CreateRecipe();
             recipe3.AddIngredient(ItemID.GreaterHealingPotion, 5);
             recipe3.AddTile(ModContent.TileType<AlloyWorkBench>());
-            recipe3.SetResult(this);
-            recipe3.AddRecipe();
+            recipe3.Register();
         }
 
     }

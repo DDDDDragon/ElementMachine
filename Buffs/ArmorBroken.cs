@@ -6,10 +6,10 @@ namespace ElementMachine.Buffs
 {
     public class ArmorBroken : ModBuff 
     {
-        public override void SetDefaults() 
+        public override void SetStaticDefaults() 
         {
             DisplayName.SetDefault("ArmorBroken");
-            DisplayName.AddTranslation(GameCulture.Chinese, "破甲");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "破甲");
             Description.SetDefault("Lower enemy's defense");
         }
     }

@@ -5,12 +5,13 @@ using Terraria.ID;
 using Terraria.ObjectData;
 using Terraria.Localization;
 using ElementMachine.Machine;
+using Terraria.DataStructures;
 
 namespace ElementMachine.Tiles
 {
     public class AlloyAnalyzer : ModTile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
@@ -21,12 +22,12 @@ namespace ElementMachine.Tiles
 			AddMapEntry(new Color(196, 199, 205));
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("Alloy Analyzer");
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
         }
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<AlloyAnalyzerItem>());
+            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<AlloyAnalyzerItem>());
         }
     }
     public class AlloyAnalyzerItem : MachineItem
@@ -34,30 +35,30 @@ namespace ElementMachine.Tiles
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("AlloyAnalyzer");
-            DisplayName.AddTranslation(GameCulture.Chinese, "合金分析仪");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "合金分析仪");
             Tooltip.SetDefault("Bi————————Hey, this is not any alloy!\nsome material will be sold in Guide's shop after you analyzer it by this");
-            Tooltip.AddTranslation(GameCulture.Chinese, "哔————————日, 这tm不是合金!\n一些材料在你用这玩意分析过后会在向导的商店出售!");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "哔————————日, 这tm不是合金!\n一些材料在你用这玩意分析过后会在向导的商店出售!");
         }
         public override void SetDefaults()
         {
-            item.width = 32;
-			item.height = 18;
-			item.maxStack = 999;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = 1;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<AlloyAnalyzer>();
+            Item.width = 32;
+			Item.height = 18;
+			Item.maxStack = 999;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<AlloyAnalyzer>();
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 10);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            
+            recipe.Register();
         }
 
     }

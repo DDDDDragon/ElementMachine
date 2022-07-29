@@ -18,11 +18,6 @@ namespace ElementMachine.Machine
             base.ResetEffects();
             MachineArmorSet = false;
         }
-        //public BarBase EnergyBar = new BarBase(() => EnergyNow, () => EnergyMax, ModContent.GetTexture())
-        public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-        {
-            base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-
-        }
+        //public BarBase EnergyBar = new BarBase(() => EnergyNow, () => EnergyMax, ModContent.Request<Texture2D>())
     }
 }

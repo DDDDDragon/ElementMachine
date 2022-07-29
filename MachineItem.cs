@@ -32,9 +32,9 @@ namespace ElementMachine
         public List<Energy> energyTypes = new List<Energy>(){Energy.None};
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
-            if (!line.oneDropLogo) 
+            if (!line.OneDropLogo) 
 			{
-				if (line.Name == "Damage" && line.mod == "Terraria")
+				if (line.Name == "Damage" && line.Mod == "Terraria")
 				{
 					//float drawX = line.X + line.font.MeasureString(sepText).X - 150;
 					float drawY = line.Y;

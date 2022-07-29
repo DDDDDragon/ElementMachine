@@ -14,9 +14,9 @@ namespace ElementMachine
 		/// <param name="j">物块Y坐标</param>
 		public static Vector2 GetTileOrigin(int i, int j)
 		{
-            int type = Main.tile[i, j].type;
-            while(Main.tile[i - 1, j].type == type) i--;
-            while(Main.tile[i, j - 1].type == type) j--;
+            int type = Main.tile[i, j].TileType;
+            while(Main.tile[i - 1, j].TileType == type) i--;
+            while(Main.tile[i, j - 1].TileType == type) j--;
 			return  new Vector2(i, j);
 		}
 	}

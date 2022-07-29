@@ -1,24 +1,23 @@
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.Localization;
+using ElementMachine.Tiles;
 
 namespace ElementMachine.Oblation
 {
-    public class OblationRecipe : ModRecipe
+    public class OblationRecipe
     {
-        public OblationRecipe(Mod mod) : base(mod)
+        public static Recipe CreateOblationRecipe(ModItem item, int stack = 1)
         {
-
-        }
-        public bool Single = false;
-        public override void OnCraft(Item item)
-        {
-            if(!MyPlayer.Oblations.Contains(this.createItem.modItem.Name)) MyPlayer.Oblations.Add(this.createItem.modItem.Name);
-            base.OnCraft(item);
-        }
-        public override bool RecipeAvailable()
-        {
-            if(Single) return !MyPlayer.Oblations.Contains(this.createItem.modItem.Name);
-            return base.RecipeAvailable();
+            Recipe recipe = item.CreateRecipe(stack);
+            recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
+            recipe.AddCondition(NetworkText.Empty, r => {
+                return (item as OblationCore).single && !MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name);
+            });
+            recipe.AddOnCraftCallback(delegate (Recipe recipe, Item item){
+                if (!MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name) && (recipe.createItem.ModItem as OblationCore).single) MyPlayer.Oblations.Add(recipe.createItem.ModItem.Name);
+            });
+            return recipe;
         }
     }
 
@@ -30,5 +29,18 @@ namespace ElementMachine.Oblation
             base.Update(ref gravity, ref maxFallSpeed);
         }
         public bool single = false;
+        public virtual MyPlayer.AltarType RequestSacrifice()
+        {
+            return MyPlayer.AltarType.None;
+        }
+        public virtual void OnSacrifice(Player player)
+        {
+            if(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive) Main.NewText("成功献祭" + player.HeldItem.Name);
+            else Main.NewText("successfully sacrifice" + player.HeldItem.Name);
+        }
+    }
+    public abstract class BossCore : OblationCore
+    {
+
     }
 }

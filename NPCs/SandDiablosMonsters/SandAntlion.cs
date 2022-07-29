@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ElementMachine.Buffs;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Utilities;
 
 namespace ElementMachine.NPCs.SandDiablosMonsters
 {
@@ -11,29 +12,34 @@ namespace ElementMachine.NPCs.SandDiablosMonsters
 	{
         public override void SetStaticDefaults()
 		{
-			Main.npcFrameCount[npc.type] = 5;
+			Main.npcFrameCount[NPC.type] = 5;
 		}
         public override void SetDefaults()
         {
-            npc.CloneDefaults(NPCID.Antlion);
+            NPC.CloneDefaults(NPCID.Antlion);
             base.SetDefaults();
         }
         public override bool PreAI()
         {
-            npc.frameCounter++;
-            if(npc.frameCounter == 15)
+            NPC.frameCounter++;
+            if(NPC.frameCounter == 15)
             {
-                if(npc.frame.Y < 160) npc.frame.Y += 40;
-                else npc.frame.Y = 0;
-                npc.frameCounter = 0;
+                if(NPC.frame.Y < 160) NPC.frame.Y += 40;
+                else NPC.frame.Y = 0;
+                NPC.frameCounter = 0;
             }
             return true;
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D tex = ModContent.GetTexture("ElementMachine/NPCs/SandDiablosMonsters/SandAntlionBody");
-            Main.spriteBatch.Draw(tex, npc.position + new Vector2(0, 16) - Main.screenPosition, Color.White);
-            return true;
+            Texture2D tex = ModContent.Request<Texture2D>("ElementMachine/NPCs/SandDiablosMonsters/SandAntlionBody").Value;
+            Main.spriteBatch.Draw(tex, NPC.position + new Vector2(0, 16) - Main.screenPosition, Color.White);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (MyWorld.SandDiablos && spawnInfo.Player.ZoneDesert) return SpawnCondition.OverworldDayDesert.Chance;
+            else return SpawnCondition.OverworldDayDesert.Chance / 2;
         }
     }
 }

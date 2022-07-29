@@ -5,12 +5,13 @@ using Terraria.ID;
 using Terraria.ObjectData;
 using Terraria.Localization;
 using ElementMachine.Machine;
+using Terraria.DataStructures;
 
 namespace ElementMachine.Tiles
 {
     public class ElementHoroscoper : ModTile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
@@ -23,12 +24,12 @@ namespace ElementMachine.Tiles
 			AddMapEntry(new Color(126, 67, 0));
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("Element Horoscoper");
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
         }
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<ElementHoroscoperItem>());
+            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ElementHoroscoperItem>());
         }
     }
     public class ElementHoroscoperItem : ElementItem
@@ -36,37 +37,36 @@ namespace ElementMachine.Tiles
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("ElementHoroscoper");
-            DisplayName.AddTranslation(GameCulture.Chinese, "元素星象仪");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "元素星象仪");
             Tooltip.SetDefault("provide star's force for crafting element things\nusing for crafting many earlier stage things!");
-            Tooltip.AddTranslation(GameCulture.Chinese, "为你前期的元素合成提供星象之力\n用于合成许多前期物品!");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "为你前期的元素合成提供星象之力\n用于合成许多前期物品!");
         }
         public override void SetDefaults()
         {
-            item.width = 32;
-			item.height = 18;
-			item.maxStack = 999;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = 1;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<ElementHoroscoper>();
+            Item.width = 32;
+			Item.height = 18;
+			Item.maxStack = 999;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<ElementHoroscoper>();
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 10);
             recipe.AddRecipeGroup(RecipeGroupID.Wood, 20);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-            ModRecipe recipe1 = new ModRecipe(mod);
+            
+            recipe.Register();
+            Recipe recipe1 = CreateRecipe();
             recipe1.AddIngredient(ItemID.FallenStar, 1);
             recipe1.AddRecipeGroup(RecipeGroupID.Wood, 20);
             recipe1.AddTile(TileID.Anvils);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
+            recipe1.Register();
         }
 
     }

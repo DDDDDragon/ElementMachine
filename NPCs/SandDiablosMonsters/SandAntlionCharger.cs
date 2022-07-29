@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ElementMachine.Buffs;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Utilities;
 
 namespace ElementMachine.NPCs.SandDiablosMonsters
 {
@@ -11,15 +12,20 @@ namespace ElementMachine.NPCs.SandDiablosMonsters
 	{
         public override void SetStaticDefaults()
 		{
-			Main.npcFrameCount[npc.type] = 6;
+			Main.npcFrameCount[NPC.type] = 6;
 		}
         public override void SetDefaults()
         {
-            npc.CloneDefaults(NPCID.WalkingAntlion);
-            npc.aiStyle = 3;
-            aiType = NPCID.WalkingAntlion;
-            animationType = NPCID.WalkingAntlion;
+            NPC.CloneDefaults(NPCID.WalkingAntlion);
+            NPC.aiStyle = 3;
+            AIType = NPCID.WalkingAntlion;
+            AnimationType = NPCID.WalkingAntlion;
             base.SetDefaults();
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if(MyWorld.SandDiablos && spawnInfo.Player.ZoneDesert) return SpawnCondition.DesertCave.Chance;
+            else return SpawnCondition.DesertCave.Chance / 2;
         }
     }
 }

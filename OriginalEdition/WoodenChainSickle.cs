@@ -22,12 +22,12 @@ namespace ElementMachine.OriginalEdition
         }
 		public override void AddRecipes()
 		{
-			var recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup("Wood", 20);
 			recipe.AddIngredient(ItemID.Chain, 1);
 			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
     }
 	public class WoodenChainSickleProj : BaseSickle
@@ -38,12 +38,12 @@ namespace ElementMachine.OriginalEdition
 		}
 		public override void SetDefaults()
 		{
-			projectile.width = 46;
-			projectile.height = 28;
-			projectile.friendly = true;
-			projectile.penetrate = -1;
-			projectile.melee = true;
-            projectile.knockBack = 0;
+			Projectile.width = 46;
+			Projectile.height = 28;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.DamageType = DamageClass.Melee;
+            Projectile.knockBack = 0;
 		}
         public override void SetSprite(string a)
         {

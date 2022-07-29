@@ -9,6 +9,8 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Terraria.Audio;
+
 namespace ElementMachine.Bases
 {
 	public abstract class BaseSickleItem : ElementItem
@@ -17,25 +19,25 @@ namespace ElementMachine.Bases
         {
 			SetSickle();
             DisplayName.SetDefault(defaultName);
-            DisplayName.AddTranslation(GameCulture.Chinese, transName);
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), transName);
 			Tooltip.SetDefault("shoot a chain blade and keep it on the first enemy it hits ");
 			string trans = "[c/00FF00:「钩镰」]\n发射一个链刃并钩住第一个它命中的敌人,松开左键会收回\n若敌人超出160码则不会钩住\n每次钩中敌人可以增加一点命中点数\n每次钩中敌人时按右键可以向鼠标方向位移一段距离,位移期间无敌\n若你与敌人的距离大于160码则敌人会向你的方向同时位移更小的一段距离\n若位移未结束前收回钩镰会进行一次超远距离跳跃\n[c/8c6640:「特效」]\n";
 			if(press) trans += "钩镰存在时,按下E键,";
-			Tooltip.AddTranslation(GameCulture.Chinese, trans + Effect);
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), trans + Effect);
         }
 		public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) 
 		{
 			base.PreDrawTooltipLine(line, ref yOffset);
-			if (!line.oneDropLogo) 
+			if (!line.OneDropLogo) 
 			{
 				string sepText = "[c/00FF00:「" + Main.LocalPlayer.GetModPlayer<BasePlayer>().SickleDamagePer * 100 + "%额外钩镰伤害」]";
-				if (line.Name == "Damage" && line.mod == "Terraria")
+				if (line.Name == "Damage" && line.Mod == "Terraria")
 				{
 					Color color = new Color(220,220,157);
-					float drawX = line.X + line.font.MeasureString(sepText).X - 150;
+					float drawX = line.X + line.Font.MeasureString(sepText).X - 150;
 					float drawY = line.Y;
-					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, line.font, sepText,
-						new Vector2(drawX, drawY), line.color, line.rotation, line.origin, line.baseScale, line.maxWidth, line.spread);
+					ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, line.Font, sepText,
+						new Vector2(drawX, drawY), line.Color, line.Rotation, line.Origin, line.BaseScale, line.MaxWidth, line.Spread);
 				}
 				else 
 				{
@@ -54,22 +56,22 @@ namespace ElementMachine.Bases
         public override void SetDefaults()
 		{
 			SetSickle();
-			item.width = 44;
-			item.height = 44;
-			item.value = Item.sellPrice(silver: 5);
-			item.noMelee = true;
-			item.useStyle = ItemUseStyleID.HoldingOut;
-			item.useAnimation = 40;
-			item.useTime = 40;
-			item.knockBack = 0;
-			item.damage = damage;
-			item.noUseGraphic = true;
-			item.shoot = shootType;
-			item.shootSpeed = shootSpeed;
-			item.UseSound = SoundID.Item1;
-			item.melee = true;
-			item.crit = 2;
-			item.channel = true;
+			Item.width = 44;
+			Item.height = 44;
+			Item.value = Item.sellPrice(silver: 5);
+			Item.noMelee = true;
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.useAnimation = 40;
+			Item.useTime = 40;
+			Item.knockBack = 0;
+			Item.damage = damage;
+			Item.noUseGraphic = true;
+			Item.shoot = shootType;
+			Item.shootSpeed = shootSpeed;
+			Item.UseSound = SoundID.Item1;
+			Item.DamageType = DamageClass.Melee;
+			Item.crit = 2;
+			Item.channel = true;
 		}  
 		public virtual void SetSickle()
 		{
@@ -85,7 +87,7 @@ namespace ElementMachine.Bases
         }
         public virtual void SetSprite(string a)
         {
-            chainTexture = ModContent.GetTexture(a);
+            chainTexture = ModContent.Request<Texture2D>(a).Value;
         }
         public override void SetStaticDefaults()
 		{
@@ -93,12 +95,12 @@ namespace ElementMachine.Bases
 		}
 		public override void SetDefaults()
 		{
-			projectile.width = 46;
-			projectile.height = 28;
-			projectile.friendly = true;
-			projectile.penetrate = -1;
-			projectile.melee = true;
-            projectile.knockBack = 0;
+			Projectile.width = 46;
+			Projectile.height = 28;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.DamageType = DamageClass.Melee;
+            Projectile.knockBack = 0;
 		}
 		public static bool Attack = false;			
 		public static Player player;		
@@ -114,79 +116,79 @@ namespace ElementMachine.Bases
         Vector2 mouseMovement;
 		public override void AI()
 		{
-			player = Main.player[projectile.owner];
+			player = Main.player[Projectile.owner];
 			if (player.dead) 
 			{
-				projectile.Kill();
+				Projectile.Kill();
 				return;
 			}
 			mouseMovement = Main.MouseScreen - mouseOldPos;
             mouseOldPos = Main.MouseScreen;
 			player.itemAnimation = 10;
 			player.itemTime = 10;
-			int newDirection = projectile.Center.X > player.Center.X ? 1 : -1;
+			int newDirection = Projectile.Center.X > player.Center.X ? 1 : -1;
 			player.ChangeDir(newDirection);
-			projectile.direction = newDirection;
-			var vectorToPlayer = player.MountedCenter - projectile.Center;
+			Projectile.direction = newDirection;
+			var vectorToPlayer = player.MountedCenter - Projectile.Center;
 			float currentChainLength = vectorToPlayer.Length();
-			if (projectile.ai[0] == 0f) 
+			if (Projectile.ai[0] == 0f) 
             {
                 CoolTimer++;
 				float maxChainLength = 160f;
-				projectile.tileCollide = true;
+				Projectile.tileCollide = true;
 				if (currentChainLength > maxChainLength) 
                 {
-					projectile.ai[0] = 1f;
-					projectile.netUpdate = true;
+					Projectile.ai[0] = 1f;
+					Projectile.netUpdate = true;
 				}
 				else if (!player.channel)
                 {
-					if (projectile.velocity.Y < 0f) projectile.velocity.Y *= 0.9f;
-					projectile.velocity.Y += 1f;
-					projectile.velocity.X *= 0.9f;
+					if (Projectile.velocity.Y < 0f) Projectile.velocity.Y *= 0.9f;
+					Projectile.velocity.Y += 1f;
+					Projectile.velocity.X *= 0.9f;
 				}
                 if(Main.mouseLeft) mouseLeft = true;
                 if(Main.mouseLeftRelease && mouseLeft && CoolTimer > 120) 
                 {
-                    projectile.ai[0] = 1f;
+                    Projectile.ai[0] = 1f;
                     mouseLeft = false;
                 }
                 
 			}
-			else if (projectile.ai[0] == 1f) 
+			else if (Projectile.ai[0] == 1f) 
             {
                 CoolTimer = 0;
-				float elasticFactorA = 14f / player.meleeSpeed;
-				float elasticFactorB = 0.9f / player.meleeSpeed;
+				float elasticFactorA = 14f / player.GetAttackSpeed(DamageClass.Melee);
+				float elasticFactorB = 0.9f / player.GetAttackSpeed(DamageClass.Melee);
 				float maxStretchLength = 300f; 
-				if (projectile.ai[1] == 1f) projectile.tileCollide = false;
-				if (!player.channel || currentChainLength > maxStretchLength || !projectile.tileCollide) 
+				if (Projectile.ai[1] == 1f) Projectile.tileCollide = false;
+				if (!player.channel || currentChainLength > maxStretchLength || !Projectile.tileCollide) 
                 {
-					projectile.ai[1] = 1f;
-					if (projectile.tileCollide) projectile.netUpdate = true;
-					projectile.tileCollide = false;
-					if (currentChainLength < 20f) projectile.Kill();
+					Projectile.ai[1] = 1f;
+					if (Projectile.tileCollide) Projectile.netUpdate = true;
+					Projectile.tileCollide = false;
+					if (currentChainLength < 20f) Projectile.Kill();
 				}
-				if (!projectile.tileCollide) elasticFactorB *= 2f;
+				if (!Projectile.tileCollide) elasticFactorB *= 2f;
 				int restingChainLength = 60;
-				if (currentChainLength > restingChainLength || !projectile.tileCollide) {
-					var elasticAcceleration = vectorToPlayer * elasticFactorA / currentChainLength - projectile.velocity;
+				if (currentChainLength > restingChainLength || !Projectile.tileCollide) {
+					var elasticAcceleration = vectorToPlayer * elasticFactorA / currentChainLength - Projectile.velocity;
 					elasticAcceleration *= elasticFactorB / elasticAcceleration.Length();
-					projectile.velocity *= 0.98f;
-					projectile.velocity += elasticAcceleration;
+					Projectile.velocity *= 0.98f;
+					Projectile.velocity += elasticAcceleration;
 				}
 				else {
-					if (Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y) < 6f) 
+					if (Math.Abs(Projectile.velocity.X) + Math.Abs(Projectile.velocity.Y) < 6f) 
                     {
-						projectile.velocity.X *= 0.96f;
-						projectile.velocity.Y += 0.2f;
+						Projectile.velocity.X *= 0.96f;
+						Projectile.velocity.Y += 0.2f;
 					}
-					if (player.velocity.X == 0f) projectile.velocity.X *= 0.96f;
+					if (player.velocity.X == 0f) Projectile.velocity.X *= 0.96f;
 				}
 			}
             if(Main.keyState.IsKeyDown(Keys.W)) Up = true;
             else Up = false;
-            projectile.rotation = vectorToPlayer.ToRotation() - projectile.velocity.X * 0.1f;
+            Projectile.rotation = vectorToPlayer.ToRotation() - Projectile.velocity.X * 0.1f;
             if(Attack) HitTimer++;
 			if(HitTimer == 600) HitTimer = 0;
 			if(Target.life <= 0) HitTimer = 0;
@@ -213,7 +215,7 @@ namespace ElementMachine.Bases
 					Effect();
 					E = false;
 				}
-				projectile.Center = Target.Center;
+				Projectile.Center = Target.Center;
                 foreach(var i in Main.npc)
                 {
                     if(Target == i && i.type != NPCID.TargetDummy)
@@ -263,50 +265,54 @@ namespace ElementMachine.Bases
         public bool dash = false;  
         public bool pullUp = false;
         public bool Move2 = false;          
+#pragma warning disable CS0414 // The field 'BaseSickle.t' is assigned but its value is never used
+#pragma warning disable CS0414 // 字段“BaseSickle.t”已被赋值，但从未使用过它的值
         float t = 0;
+#pragma warning restore CS0414 // 字段“BaseSickle.t”已被赋值，但从未使用过它的值
+#pragma warning restore CS0414 // The field 'BaseSickle.t' is assigned but its value is never used
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			bool shouldMakeSound = false;
-			if (oldVelocity.X != projectile.velocity.X) 
+			if (oldVelocity.X != Projectile.velocity.X) 
             {
 				if (Math.Abs(oldVelocity.X) > 4f) 
                 {
 					shouldMakeSound = true;
 				}
-				projectile.position.X += projectile.velocity.X;
-				projectile.velocity.X = -oldVelocity.X * 0.2f;
+				Projectile.position.X += Projectile.velocity.X;
+				Projectile.velocity.X = -oldVelocity.X * 0.2f;
 			}
-			if (oldVelocity.Y != projectile.velocity.Y)
+			if (oldVelocity.Y != Projectile.velocity.Y)
             {
 				if (Math.Abs(oldVelocity.Y) > 4f) 
                 {
 					shouldMakeSound = true;
 				}
-				projectile.position.Y += projectile.velocity.Y;
-				projectile.velocity.Y = -oldVelocity.Y * 0.2f;
+				Projectile.position.Y += Projectile.velocity.Y;
+				Projectile.velocity.Y = -oldVelocity.Y * 0.2f;
 			}
-			projectile.ai[0] = 1f;
+			Projectile.ai[0] = 1f;
 			if (shouldMakeSound) 
             {
-				projectile.netUpdate = true;
-				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
-				Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
+				Projectile.netUpdate = true;
+				Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
+				SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 			}
 			return false;
 		}
         Texture2D chainTexture;
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+		public override bool PreDraw(ref Color lightColor)
 		{
 			
 			Vector2 mountedCenter = player.MountedCenter;
 			SetSprite("");
-			var drawPosition = projectile.Center;
+			var drawPosition = Projectile.Center;
 			var remainingVectorToPlayer = mountedCenter - drawPosition;
 			float rotation = remainingVectorToPlayer.ToRotation() - MathHelper.PiOver2;
-			if (projectile.alpha == 0) 
+			if (Projectile.alpha == 0) 
             {
 				int direction = -1;
-				if (projectile.Center.X < mountedCenter.X) direction = 1;
+				if (Projectile.Center.X < mountedCenter.X) direction = 1;
 				player.itemRotation = (float)Math.Atan2(remainingVectorToPlayer.Y * direction, remainingVectorToPlayer.X * direction);
 			}
 			while (true) 
@@ -316,13 +322,13 @@ namespace ElementMachine.Bases
 				drawPosition += remainingVectorToPlayer * 12 / length;
 				remainingVectorToPlayer = mountedCenter - drawPosition;
 				Color color = Lighting.GetColor((int)drawPosition.X / 16, (int)(drawPosition.Y / 16f));
-				spriteBatch.Draw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+				Main.EntitySpriteDraw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
 			}
 			return true;
 		}
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            if(HitTimer == 0 && projectile.ai[0] == 0f) 
+            if(HitTimer == 0 && Projectile.ai[0] == 0f) 
 			{
 				Attack = true;
 				Target = target;

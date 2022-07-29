@@ -5,19 +5,23 @@ using Terraria.ModLoader.IO;
 
 namespace ElementMachine
 {
-    public class MyWorld : ModWorld
+    public class MyWorld : ModSystem
     {
-        public bool SandDiablos = false;
-        public override TagCompound Save()
+        public override void PostWorldGen()
         {
-            TagCompound tag = new TagCompound();
-            tag.Add("SandDiablos", SandDiablos);
-            return tag;
+            base.PostWorldGen();
         }
-        public override void Load(TagCompound tag)
+        public static bool SandDiablos = false;
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("SandDiablos", SandDiablos);
+            base.SaveWorldData(tag);
+        }
+        public override void LoadWorldData(TagCompound tag)
         {
             SandDiablos = tag.GetBool("SandDiablos");
-            base.Load(tag);
+            base.LoadWorldData(tag);
         }
+        
     }
 }

@@ -3,6 +3,7 @@ using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria;
 
 namespace ElementMachine.Element.Nature
 {
@@ -11,45 +12,45 @@ namespace ElementMachine.Element.Nature
         public override void SetStaticDefaults() 
 		{   
             DisplayName.SetDefault("VineChakram");
-            DisplayName.AddTranslation(GameCulture.Chinese, "藤蔓旋刃");
+            DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "藤蔓旋刃");
 			Tooltip.SetDefault("fall as fallen leaves, sharp as sharpen knives");
-            Tooltip.AddTranslation(GameCulture.Chinese, "落叶般飘零, 刀刃般锋利");
+            Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "落叶般飘零, 刀刃般锋利");
 		}
         public override void SetDefaults() 
 		{
-            item.noMelee = true;
-            item.useStyle = 1;
-            item.shootSpeed = 11f;
-            item.shoot = ProjectileType<VineChakramprojectile>();
-            item.damage = 10;
-            item.knockBack = 8f;
-            item.width = 28;
-            item.height = 28;
-            item.UseSound = SoundID.Item1;
-            item.useAnimation = 15;
-            item.useTime = 15;
-            item.noUseGraphic = true;
-            item.rare = 5;
-            item.value = 500;
-            item.autoReuse = true;
+            Item.noMelee = true;
+            Item.useStyle = 1;
+            Item.shootSpeed = 11f;
+            Item.shoot = ProjectileType<VineChakramprojectile>();
+            Item.damage = 10;
+            Item.knockBack = 8f;
+            Item.width = 28;
+            Item.height = 28;
+            Item.UseSound = SoundID.Item1;
+            Item.useAnimation = 15;
+            Item.useTime = 15;
+            Item.noUseGraphic = true;
+            Item.rare = 5;
+            Item.value = 500;
+            Item.autoReuse = true;
 		}
         public override void AddRecipes() 
         {
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Vine, 5);
             recipe.AddRecipeGroup(RecipeGroupID.Wood, 20);
 			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
     }
     public class VineChakramprojectile : ModProjectile
     {
         public override void SetDefaults()
         {
-            projectile.width = 23;
-            projectile.height = 23;
-            projectile.CloneDefaults(ProjectileID.ThornChakram);
+            Projectile.width = 23;
+            Projectile.height = 23;
+            Projectile.CloneDefaults(ProjectileID.ThornChakram);
         } 
     }
 }

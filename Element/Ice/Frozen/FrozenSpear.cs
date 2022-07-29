@@ -15,7 +15,7 @@ namespace ElementMachine.Element.Ice.Frozen
 	{
 		public override void SetSpear()
         {
-			damage = 13;
+			damage = 11;
             defaultName = "FrozenShieldSpear";
             transName = "霜寒盾矛";
             Effect = "击中敌人造成减速效果";
@@ -29,14 +29,14 @@ namespace ElementMachine.Element.Ice.Frozen
         }
         public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.IceBlock, 20);
 			recipe.AddIngredient(ItemID.SnowBlock, 20);
 			recipe.AddIngredient(ItemID.SlushBlock, 20);
 			recipe.AddIngredient(ModContent.ItemType<FrozenStone>(), 7);
 			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			
+			recipe.Register();
 		}
 	}
     public class Frozenproj2 : BaseShieldSpearProjT
