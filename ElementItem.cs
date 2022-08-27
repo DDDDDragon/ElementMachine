@@ -18,6 +18,11 @@ namespace ElementMachine
 {
     public abstract class ElementItem : ModItem
     {
+        public float ElementLevel;
+        /// <summary>
+        /// 1-Flame 2-Ice 3-Earth 4- Water 5-Nature
+        /// </summary>
+        public int Element;
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
             base.PostDrawTooltipLine(line);
@@ -30,6 +35,14 @@ namespace ElementMachine
         {
             base.SetDefaults();
         }
+    }
+    public abstract class ElementProj : ModProjectile
+    {
+        public float ElementLevel;
+        /// <summary>
+        /// 1-Flame 2-Ice 3-Earth 4- Water 5-Nature
+        /// </summary>
+        public int Element = -1;
     }
     public class ElementGlobalItem : GlobalItem
     {
@@ -51,12 +64,13 @@ namespace ElementMachine
 		}
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            ElementItem EItem = item.ModItem as ElementItem;
             if(item.ModItem is ElementItem || item.ModItem is OblationCore)
             {
                 int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if(num != -1) 
                 {
-                    if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num + 1, item);
+                    if(EItem.Element == -1) this.InsertElementalTooltip(tooltips, num + 1, item);
                     else this.InsertElementalTooltip(tooltips, num + 1, item, false);
                 }
                 else if((item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1) && !item.vanity)
@@ -64,7 +78,7 @@ namespace ElementMachine
                     int num2 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Defense"));
                     if(num2 != -1) 
                     {
-                        if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num2 + 1, item);
+                        if(EItem.Element == -1) this.InsertElementalTooltip(tooltips, num2 + 1, item);
                         else this.InsertElementalTooltip(tooltips, num2 + 1, item, false);
                     }
                 }
@@ -73,7 +87,7 @@ namespace ElementMachine
                     int num3 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
                     if(num3 != -1)
                     {
-                        if(ElementMachine.GetElement(item.ModItem.Name) == -1) this.InsertElementalTooltip(tooltips, num3 + 1, item);
+                        if(EItem.Element == -1) this.InsertElementalTooltip(tooltips, num3 + 1, item);
                         else this.InsertElementalTooltip(tooltips, num3 + 1, item, false);
                     }
                 }
@@ -83,6 +97,7 @@ namespace ElementMachine
         
         public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
         {
+            ElementItem EItem = item.ModItem as ElementItem;
             Texture2D texture = ModContent.Request<Texture2D>("ElementMachine/UI/TooltipBackground").Value;
             int num = 0;
 			int num2 = 0;
@@ -114,13 +129,14 @@ namespace ElementMachine
         }
         public override void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
         {
+            ElementItem EItem = item.ModItem as ElementItem;
             if (line.Name.Equals("EAM:Elemental"))
 			{
 				Vector2 position = new Vector2((float)(line.X + (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, line.Text, new Vector2(1f, 1f), -1f).X), line.Y);
                 string num = "";
-                if(ElementMachine.GetElement(item.ModItem.Name) != -1)
+                if(EItem.Element != -1)
                 {
-                    num = ElementMachine.GetElementName(ElementMachine.GetElement(item.ModItem.Name));
+                    num = ElementMachine.GetElementName(EItem.Element);
                     Main.spriteBatch.Draw(ModContent.Request<Texture2D>($"ElementMachine/Element/{num}Icon").Value, position, Color.White);
                     
                 }

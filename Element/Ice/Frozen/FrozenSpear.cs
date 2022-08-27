@@ -25,7 +25,9 @@ namespace ElementMachine.Element.Ice.Frozen
             SpearProjType = ModContent.ProjectileType<Frozenproj>();
 			ThrownProjType = ModContent.ProjectileType<Frozenproj2>();
             shootSpeed = 10f;
-            base.SetSpear();
+			Element = 2;
+			ElementLevel = 0.7f;
+			base.SetSpear();
         }
         public override void AddRecipes()
 		{
@@ -41,6 +43,12 @@ namespace ElementMachine.Element.Ice.Frozen
 	}
     public class Frozenproj2 : BaseShieldSpearProjT
     {
+        public override void SetDefaults()
+        {
+			Element = 2;
+			ElementLevel = 0.7f;
+            base.SetDefaults();
+        }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
 			target.AddBuff(ModContent.BuffType<lowerSpeed>(), 180);
@@ -50,6 +58,12 @@ namespace ElementMachine.Element.Ice.Frozen
 
 	public class Frozenproj : BaseShieldSpearProjS
 	{
+		public override void SetDefaults()
+		{
+			Element = 2;
+			ElementLevel = 0.7f;
+			base.SetDefaults();
+		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 			target.AddBuff(ModContent.BuffType<lowerSpeed>(), 180);

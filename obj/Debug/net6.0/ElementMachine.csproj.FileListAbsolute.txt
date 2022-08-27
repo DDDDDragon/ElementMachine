@@ -29,7 +29,6 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\b
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\NVorbis.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\RailSDK.Net.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ReLogic.dll
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\SixLabors.ImageSharp.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\Steamworks.NET.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\SteelSeriesEngineWrapper.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\System.CodeDom.dll
@@ -75,7 +74,6 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\b
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Utils.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ReLogic.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ReLogic.xml
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\SixLabors.ImageSharp.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\System.CodeDom.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\System.Composition.AttributedModel.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\System.Composition.Convention.xml

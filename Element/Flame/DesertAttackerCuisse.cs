@@ -23,6 +23,8 @@ namespace ElementMachine.Element.Flame
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Blue;
 			Item.defense = 2;
+			Element = 1;
+			ElementLevel = 0.7f;
 		}		
 		public override void UpdateEquip(Player player)
         {

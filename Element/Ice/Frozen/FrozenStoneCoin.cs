@@ -23,6 +23,8 @@ namespace ElementMachine.Element.Ice.Frozen
             Item.maxStack = 1;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Green;
+			Element = 2;
+			ElementLevel = 0.7f;
 		}
     }
 }

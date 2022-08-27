@@ -103,7 +103,7 @@ namespace ElementMachine.Bases
 			return base.CanShoot(player);
         }
     }
-    public abstract class BaseShieldSpearProjT : ModProjectile
+    public abstract class BaseShieldSpearProjT : ElementProj
     {
         public override void SetStaticDefaults()
         {
@@ -120,8 +120,8 @@ namespace ElementMachine.Bases
             base.SetDefaults();
         }
     }
-    public abstract class BaseShieldSpearProjS : ModProjectile
-    {
+    public abstract class BaseShieldSpearProjS : ElementProj
+	{
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Spear");

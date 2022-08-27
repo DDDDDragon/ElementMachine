@@ -21,6 +21,8 @@ namespace ElementMachine.Element.Flame
             shootType = ModContent.ProjectileType<DesertAttackerChainSickleProj>();
             shootSpeed = 18.5f;
             Item.rare = ItemRarityID.Blue;
+            Element = 1;
+            ElementLevel = 0.7f;
             base.SetSickle();
         }
         public override void AddRecipes()
@@ -46,6 +48,8 @@ namespace ElementMachine.Element.Flame
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Melee;
             Projectile.knockBack = 0;
+            Element = 1;
+            ElementLevel = 1.3f;
 		}
         public override void SetSprite(string a)
         {

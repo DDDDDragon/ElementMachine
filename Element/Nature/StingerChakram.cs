@@ -34,7 +34,9 @@ namespace ElementMachine.Element.Nature
             Item.rare = 5;
             Item.value = 1000;
             Item.autoReuse = true;
-		}
+            Element = 5;
+            ElementLevel = 1f;
+        }
         public override void AddRecipes() 
         {
 			Recipe recipe = CreateRecipe();

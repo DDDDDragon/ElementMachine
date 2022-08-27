@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using ElementMachine.MyRecipe;
+using System.Collections.Generic;
 
 namespace ElementMachine.Machine
 {
@@ -35,9 +36,8 @@ namespace ElementMachine.Machine
             Recipe blueprintRecipe = CreateRecipe(20);
             blueprintRecipe.AddIngredient(this, 20);
             blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
-            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item)
-            {
-                BlueprintRecipe.OnCraft(recipe, item);
+            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems) {
+                BlueprintRecipe.OnCraft(recipe, item, consumedItems);
             });
             blueprintRecipe.Register();
         }

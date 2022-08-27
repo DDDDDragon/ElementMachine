@@ -23,6 +23,8 @@ namespace ElementMachine.Element.Ice.Frozen
             Item.accessory = true;
             Item.value = 2000;
             Item.rare = ItemRarityID.Blue;
+            Element = 2;
+            ElementLevel = 0.7f;
             base.SetDefaults();
         }
         public override void UpdateAccessory(Player player, bool hideVisual)

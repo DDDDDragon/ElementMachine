@@ -29,6 +29,8 @@ namespace ElementMachine.Element.Ice.Frozen
             Item.defense = 1;
             Item.rare = ItemRarityID.Blue;
             Item.value = 2000;
+            Element = 2;
+            ElementLevel = 0.7f;
             base.SetDefaults();
         }
         public override void AddRecipes()

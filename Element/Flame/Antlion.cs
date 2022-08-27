@@ -20,6 +20,8 @@ namespace ElementMachine.Element.Flame
             Item.maxStack = 999;
 			Item.value = 10;
 			Item.rare = ItemRarityID.Blue;
+			Element = 1;
+			ElementLevel = 0.7f;
 		}
 	}
     public class AntlionBones : ElementItem
@@ -37,6 +39,8 @@ namespace ElementMachine.Element.Flame
 			Item.height = 26;
 			Item.value = 10;
 			Item.rare = ItemRarityID.Orange;
+			Element = 1;
+			ElementLevel = 0.7f;
 		}
 	}
 }

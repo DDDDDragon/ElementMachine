@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework.Graphics;
 using ElementMachine.NPCs.ElementCreatures;
+using ElementMachine.World;
 
 namespace ElementMachine.Element
 {
@@ -46,7 +47,11 @@ namespace ElementMachine.Element
 			}
 			return base.CanShoot(player);
 		}
-	}
+        public override bool? UseItem(Player player)
+        {
+            return base.UseItem(player);
+        }
+    }
 	public class ElementCatcherProj : ModProjectile
     {
 		public override void SetDefaults()
@@ -114,7 +119,7 @@ namespace ElementMachine.Element
             {
 				if (target.ModNPC is ElementCreaturesBase && target.active)
 				{
-					if ((target.ModNPC as ElementCreaturesBase).Level == 2) (target.ModNPC as ElementCreaturesBase).OnCatch();
+					if ((target.ModNPC as ElementCreaturesBase).ElementLevel <= 1f && (target.ModNPC as ElementCreaturesBase).ElementLevel != 0) (target.ModNPC as ElementCreaturesBase).OnCatch();
 				}
 			}
 		}

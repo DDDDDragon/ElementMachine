@@ -19,6 +19,8 @@ using ElementMachine.NPCs.BossItems.SandDiablos;
 using ElementMachine.Oblation;
 using Terraria.GameContent;
 using Terraria.Audio;
+using ElementMachine.Tasks;
+using System.Linq;
 
 namespace ElementMachine
 {
@@ -74,10 +76,12 @@ namespace ElementMachine
 		{
 			LoadElements();
 			LoadDerivations();
+			Instance = this;
 			On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
 			On.Terraria.Main.DrawMenu += Main_DrawMenuE;
-		}
-		public static Dictionary<string, int> ItemtoElements = new Dictionary<string, int>();
+			TaskManager.Load();
+        }
+		public static ElementMachine Instance;
 		public static Dictionary<int, string> NumtoElements = new Dictionary<int, string>();
 		public static Dictionary<string, int> ItemtoDerivations = new Dictionary<string, int>();
 		public static Dictionary<int, (string, string)> NumtoDerivations = new Dictionary<int, (string, string)>();
@@ -90,7 +94,6 @@ namespace ElementMachine
 		}
 		public void LoadElements()
 		{
-			ItemtoElements.Clear();
 			NumtoElements.Clear();
 			NumtoElements.Add(-1, "None");
 			NumtoElements.Add(1, "Flame");
@@ -98,14 +101,6 @@ namespace ElementMachine
 			NumtoElements.Add(3, "Earth");
 			NumtoElements.Add(4, "Water");
 			NumtoElements.Add(5, "Nature");
-			ItemtoElements.Add("Frozen", 2);
-			ItemtoElements.Add("Desert", 3);
-			ItemtoElements.Add("DesertAttacker", 1);
-			ItemtoElements.Add("Ice", 2);
-			ItemtoElements.Add("StingerChakram", 5);
-			ItemtoElements.Add("VineChakram", 5);
-			ItemtoElements.Add("SandCracker", 3);
-			ItemtoElements.Add("Sand", 3);
 		}
 		public static int GetDerivation(string ItemName)
 		{
@@ -135,23 +130,6 @@ namespace ElementMachine
 			}
 			return "";
 		}
-		public static int GetElement(string ItemName)
-		{
-			int check = 0;
-			int ret = -1;
-			foreach(var key in ItemtoElements.Keys)
-			{
-				if(ItemName.Contains(key)) 
-				{
-					if(check < key.Length)
-					{
-						ret = ItemtoElements[key];
-						check = key.Length;
-					}
-				}
-			}
-			return ret;
-		}
 		public static string GetElementName(int ElementNum)
 		{
 			foreach(var key in NumtoElements.Keys)
@@ -166,7 +144,7 @@ namespace ElementMachine
         private void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Terraria.Main self)
         {
             orig(self);
-			if(Main.npc[Main.player[Main.myPlayer].talkNPC].type == NPCID.Guide)
+			if(Main.npc[Main.player[Main.myPlayer].talkNPC] != null && Main.npc[Main.player[Main.myPlayer].talkNPC].type == NPCID.Guide)
 			{
 				List<List<TextSnippet>> list = Utils.WordwrapStringSmart(Main.npcChatText, Color.White, FontAssets.MouseText.Value, 460, 10);
 				int count = list.Count;
@@ -189,16 +167,16 @@ namespace ElementMachine
 				{
 					vector4.X *= 260f / stringSize.X;
 				}
-				Vector2 vector5 = new Vector2((float)num + stringSize.X * vector4.X + 30f, y);
+				Vector2 vector5 = new((float)num + stringSize.X * vector4.X + 30f, y);
 				vector3 = new Vector2(0.9f);
 				Vector2 vector100 = new Vector2(0.9f);
 				stringSize = ChatManager.GetStringSize(font, Language.GetTextValue("LegacyInterface.52"), vector3, -1f);
 				vector4 = new Vector2(1f);
-				Vector2 vector6 = new Vector2(vector5.X + stringSize.X * vector4.X + 30f, y);
+				Vector2 vector6 = new(vector5.X + stringSize.X * vector4.X + 30f, y);
 				stringSize = ChatManager.GetStringSize(font, Language.GetTextValue("LegacyInterface.25"), vector3, -1f);
-				Vector2 vector7 = new Vector2(vector6.X + (stringSize.X * vector4.X + 30f) * 2, y);
+				Vector2 vector7 = new(vector6.X + (stringSize.X * vector4.X + 30f) * 2, y);
 				stringSize = ChatManager.GetStringSize(font, focusText, vector3, -1f);
-				Vector2 vector8 = new Vector2(vector7.X + (stringSize.X * vector4.X + 30f), y);
+				Vector2 vector8 = new(vector7.X + (stringSize.X * vector4.X + 30f), y);
 				if (mouse.Between(vector7, vector7 + stringSize * vector3 * vector4.X) && ! PlayerInput.IgnoreMouseInterface)
 				{
 					player.mouseInterface = true;

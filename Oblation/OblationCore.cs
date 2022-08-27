@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using ElementMachine.Tiles;
+using System.Collections.Generic;
 
 namespace ElementMachine.Oblation
 {
@@ -14,7 +15,7 @@ namespace ElementMachine.Oblation
             recipe.AddCondition(NetworkText.Empty, r => {
                 return (item as OblationCore).single && !MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name);
             });
-            recipe.AddOnCraftCallback(delegate (Recipe recipe, Item item){
+            recipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems){
                 if (!MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name) && (recipe.createItem.ModItem as OblationCore).single) MyPlayer.Oblations.Add(recipe.createItem.ModItem.Name);
             });
             return recipe;

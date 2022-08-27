@@ -33,7 +33,7 @@ namespace ElementMachine.Element.Ice.Frozen
 		}
 	}
 
-	public class FrozenMinionStaff : ModItem
+	public class FrozenMinionStaff : ElementItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("FrozenStoneFairyStaff");
@@ -60,6 +60,8 @@ namespace ElementMachine.Element.Ice.Frozen
 			Item.DamageType = DamageClass.Summon;
 			Item.buffType = ModContent.BuffType<FrozenMinionBuff>();
 			Item.shoot = ModContent.ProjectileType<FrozenMinion>();
+			Element = 2;
+			ElementLevel = 0.7f;
 		}
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

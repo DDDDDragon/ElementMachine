@@ -12,15 +12,19 @@ using ElementMachine.NPCs.BossItems.SandDiablos;
 using ElementMachine.Oblation;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
+using ElementMachine.NPCs.ElementCreatures;
+using Terraria.Audio;
+using ElementMachine.NPCs.SandDiablosMonsters;
 
 namespace ElementMachine.NPCs.Boss.SandDiablos
 {
-    public class SandDiablosShoulder : ModNPC
+    public class SandDiablosShoulder : ElementCreaturesBase
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
+            Main.npcFrameCount[NPC.type] = 4;
             base.SetStaticDefaults();
         }
         public int RorL
@@ -56,6 +60,13 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         }
         public override void AI()
         {
+            NPC.frameCounter++;
+            if(NPC.frameCounter == 30)
+            {
+                if (NPC.frame.Y == 90) NPC.frame.Y = 0;
+                else NPC.frame.Y += 30;
+                NPC.frameCounter = 0;
+            }
             NPC HeadN = new NPC();
             HeadN = Main.npc[Head];
             if(RorL == 1) Main.npc[(HeadN.ModNPC as SandDiablos).rightClaw].dontTakeDamage = true;
@@ -65,13 +76,13 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.velocity = Vector2.Normalize(nextCenter - NPC.Center) * 4.5f * Vector2.Distance(nextCenter, NPC.Center) / 35;
         }
     }
-    public class SandDiablosClaw : ModNPC
+    public class SandDiablosClaw : ElementCreaturesBase
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
-            Main.npcFrameCount[NPC.type] = 2;
+            Main.npcFrameCount[NPC.type] = 3;
             base.SetStaticDefaults();
         }
         public int RorL
@@ -91,8 +102,8 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.friendly = false;
             NPC.value = 10000;
 			NPC.damage = 20;
-			NPC.defense = 6;
-			NPC.lifeMax = 400;
+			NPC.defense = 12;
+			NPC.lifeMax = 600;
 			NPC.aiStyle = -1;
 			NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -107,10 +118,23 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         }
         public bool thisAttack = false;
         public Vector2 nextCenter = new Vector2();
+        public bool broke = false;
         public override void AI()
         {
             NPC HeadN = new NPC();
             HeadN = Main.npc[Head];
+            if(NPC.life < NPC.lifeMax / 2)
+            {
+                if (!broke)
+                {
+                    SoundEngine.PlaySound(SoundID.Item127);
+                    Main.NewText("砂角魔灵 部位破坏: 爪", Color.Gold);
+                    if (!thisAttack) NPC.frame.Y = 44;
+                    broke = true;
+                }
+                NPC.defense = 8;
+                
+            }
             Main.npc[Head].dontTakeDamage = true;
             if(!Attack)
             {
@@ -126,12 +150,20 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             }
         }
     }
-    public class SandDiablosBody : ModNPC
+    public class SandDiablosBody_Bone : ModGore
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
+    }
+    public class SandDiablosBody : ElementCreaturesBase
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
+            Main.npcFrameCount[NPC.type] = 5;
             base.SetStaticDefaults();
         }
         public int Head
@@ -143,15 +175,15 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         {
             get => (Main.npc[Head].ModNPC as SandDiablos).Attack;
         }
-        public Texture2D tex = ModContent.Request<Texture2D>("ElementMachine/NPCs/Boss/SandDiablos/SandDiablosBody_bone").Value;
+        public Texture2D tex = ModContent.Request<Texture2D>("ElementMachine/NPCs/Boss/SandDiablos/SandDiablosBody_Bone").Value;
         public override void SetDefaults()
         {
-            NPC.height = 28;
-            NPC.width = 50;
+            NPC.height = 34;
+            NPC.width = 46;
             NPC.friendly = false;
             NPC.value = 10000;
 			NPC.damage = 20;
-			NPC.defense = 6;
+			NPC.defense = 15;
 			NPC.lifeMax = 600;
 			NPC.aiStyle = -1;
 			NPC.noGravity = false;
@@ -161,8 +193,28 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.buffImmune[BuffID.Confused] = true;
             base.SetDefaults();
         }
+        public bool broke = false;
         public override void AI()
         {
+            NPC.frameCounter++;
+            if (NPC.frameCounter == 15)
+            {
+                if (NPC.frame.Y == 136) NPC.frame.Y = 0;
+                else NPC.frame.Y += 34;
+                NPC.frameCounter = 0;
+            }
+            if(NPC.life <= NPC.lifeMax / 2)
+            {
+                NPC.defense = 8;
+                if(!broke)
+                {
+                    SoundEngine.PlaySound(SoundID.Item127);
+                    Main.NewText("砂角魔灵 部位破坏: 胸壳", Color.Gold);
+                    if (Main.rand.NextBool()) Item.NewItem(null, NPC.Center, ModContent.ItemType<SandDiablosBody_bone>());
+                    else Gore.NewGore(null, NPC.Center, Vector2.Zero, ModContent.GoreType<SandDiablosBody_Bone>());
+                    broke = true;
+                }
+            }
             NPC HeadN = new NPC();
             HeadN = Main.npc[Head];
             Main.npc[Head].dontTakeDamage = true;
@@ -178,19 +230,27 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 NPC.rotation = 0.2f;
             }
         }
+        public Vector2 vec = new Vector2(0, -4);
+        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        {
+            double x = Main.rand.NextFloat(0, (float)Math.PI * 2);
+            vec = new Vector2(0, -4) + new Vector2((float)Math.Sin(x), (float)Math.Cos(x));
+            base.OnHitByProjectile(projectile, damage, knockback, crit);
+        }
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            spriteBatch.Draw(tex, NPC.position + new Vector2(16, 10) - screenPos, new Rectangle(0, 0, tex.Width, tex.Height), Color.White, NPC.rotation, tex.Size() / 2, 1f, SpriteEffects.None, 0f);
+            if(NPC.life > NPC.lifeMax / 2)spriteBatch.Draw(tex, NPC.Center + vec - screenPos, new Rectangle(0, 0, tex.Width, tex.Height), drawColor, NPC.rotation, tex.Size() / 2, 1f, SpriteEffects.None, 0f);
             
         }
     }
-    public class SandDiablosTail : ModNPC
+    public class SandDiablosTail : ElementCreaturesBase
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
+            Main.npcFrameCount[NPC.type] = 2;
             base.SetStaticDefaults();
         }
         public int Head
@@ -210,7 +270,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.friendly = false;
             NPC.value = 10000;
 			NPC.damage = 20;
-			NPC.defense = 6;
+			NPC.defense = 12;
 			NPC.lifeMax = 400;
 			NPC.aiStyle = -1;
 			NPC.noGravity = true;
@@ -220,10 +280,23 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.buffImmune[BuffID.Confused] = true;
             base.SetDefaults();
         }
+        public bool broke = false;
         public override void AI()
         {
             NPC HeadN = new NPC();
             HeadN = Main.npc[Head];
+            if (NPC.life < NPC.lifeMax / 2)
+            {
+                NPC.defense = 8;
+                if(!broke)
+                {
+                    SoundEngine.PlaySound(SoundID.Item127);
+                    Main.NewText("砂角魔灵 部位破坏: 尾", Color.Gold);
+                    NPC.frame.Y = 40;
+                    broke = true;
+                }
+                
+            }
             Main.npc[Head].dontTakeDamage = true;
             Vector2 nextCenter = new Vector2(HeadN.Center.X, HeadN.Center.Y + 70 + (float)Math.Sin(HeadN.ai[1] / 30) * 2);
             if(!Attack) 
@@ -240,13 +313,19 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 }
             }
         }
+        public override bool CheckDead()
+        {
+            (Main.npc[Head].ModNPC as SandDiablos).tailActive = false;
+            return base.CheckDead();
+        }
     }
-    public class SandDiablos : ModNPC
+    public class SandDiablos : ElementCreaturesBase
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
+            Main.npcFrameCount[NPC.type] = 3;
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
@@ -301,8 +380,10 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         public bool Attack = false;
         int AttackType = 0;
         int attackClaw = 0;
-        bool tailAttack = false;
+        public bool tailActive = true;
         int tailType = 0;
+        public int DmgCnt = 0;
+        Vector2 chasePos;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -337,9 +418,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 Main.npc[tail].position = NPC.position + new Vector2(0, 70);
                 (Main.npc[tail].ModNPC as SandDiablosTail).Head = NPC.whoAmI;
 				NPC.netUpdate = true;
-                NPC.Center = player.Center + new Vector2(0, -250);
+                NPC.Center = player.Center + new Vector2(0, 1) * -250;
 				NPC.localAI[0] = 1f;
-			}
+
+                chasePos = player.Center + new Vector2(0, -250);
+
+            }
             if(!Main.npc[body].active) 
             {
                 if(!Main.npc[leftShoulder].active) Main.npc[leftClaw].dontTakeDamage = false;
@@ -359,9 +443,24 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 Main.npc[tail].checkDead();
                 NPC.checkDead();
             }
-            
-            if(NPC.Distance(player.Center + new Vector2(0, -250)) > 10 && !Attack) NPC.velocity = Vector2.Normalize(player.Center + new Vector2(0, - 250) - NPC.Center) * 2.1f * NPC.Distance(player.Center + new Vector2(0, - 250)) / 70;
-            else if(Attack) NPC.velocity = Vector2.Zero;;
+            if (NPC.Distance(player.Center + new Vector2(0, -250)) > 20 && AttackType != -1 && !Attack) NPC.velocity = Vector2.Normalize(player.Center + new Vector2(0, -250) - NPC.Center) * 2.1f * NPC.Distance(player.Center + new Vector2(0, -250)) / 70;
+            else if (Attack) NPC.velocity = Vector2.Zero;
+            else NPC.velocity = NPC.velocity * 8 / 10;
+            if (AttackType == -1)
+            {
+                if (NPC.ai[1] <= 75 || NPC.ai[1] >= 225)
+                {
+                    NPC.velocity = Vector2.Normalize(player.Center + new Vector2(0, -250) - NPC.Center) * 2.1f * NPC.Distance(player.Center + new Vector2(0, -250)) / 70;
+                }
+                else
+                {
+                    if (NPC.ai[1] % 100 == 0)
+                    {
+                        NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.position.X, (int)NPC.position.Y, ModContent.NPCType<SandAntlionCharger>());
+                        npc.lifeMax = npc.life = npc.lifeMax / 4; 
+                    }
+                }
+            }
             if(NPC.ai[1] <= 600 && AttackType == 0)
             {
                 if(NPC.ai[1] % 60 <= 7)
@@ -466,9 +565,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                     Main.npc[attackClaw].velocity = new Vector2(2 * (Main.npc[attackClaw].ModNPC as SandDiablosClaw).RorL, -2) * 10 / 7;
                     (Main.npc[attackClaw].ModNPC as SandDiablosClaw).nextCenter = Vector2.Zero;
                 }
-                if(NPC.ai[1] % 120 == 25) Main.npc[attackClaw].noGravity = true;
-                if(NPC.ai[1] % 120 <= 45 && NPC.ai[1] % 120 >= 25) Main.npc[attackClaw].velocity = Vector2.Normalize(player.Center - Main.npc[attackClaw].Center) * 20f; 
-                if(NPC.ai[1] % 120 <= 85 && NPC.ai[1] % 120 >= 25) 
+                if (NPC.ai[1] % 120 == 25)
+                {
+                    Main.npc[attackClaw].noGravity = true;
+                    Main.npc[attackClaw].velocity = Vector2.Normalize(player.Center - Main.npc[attackClaw].Center) * 20f;
+                }
+                if(NPC.ai[1] % 120 <= 85 && NPC.ai[1] % 120 >= 45) 
                 {
                     Main.npc[attackClaw].velocity *= 0.98f;
                     if(Main.npc[attackClaw].rotation != 0) Main.npc[attackClaw].rotation += 0.03f * (Main.npc[attackClaw].ModNPC as SandDiablosClaw).RorL;
@@ -482,47 +584,80 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             }
             if(AttackType == 3)
             {
-                if(NPC.ai[1] == 0)
+                if(NPC.ai[1] < 30)
+                {
+                    NPC.frame.Y = (int)(NPC.ai[1] / 10) * 40;
+                }
+                if (NPC.ai[1] == 15) SoundEngine.PlaySound(SoundID.Roar);
+                if(NPC.ai[1] == 50)
                 {
                     Attack = true;
-                    Main.npc[leftClaw].frame.Y += 44;
-                    Main.npc[rightClaw].frame.Y += 44;
+                    Main.npc[leftClaw].frame.Y += (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
+                    Main.npc[rightClaw].frame.Y += (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
                     (Main.npc[leftClaw].ModNPC as SandDiablosClaw).thisAttack = true;
                     (Main.npc[rightClaw].ModNPC as SandDiablosClaw).thisAttack = true;
                     (Main.npc[leftClaw].ModNPC as SandDiablosClaw).nextCenter = Vector2.Zero;
                     (Main.npc[rightClaw].ModNPC as SandDiablosClaw).nextCenter = Vector2.Zero;
                 }
-                if(NPC.ai[1] <= 10)
+                if(NPC.ai[1] >= 30 && NPC.ai[1] <= 40) NPC.frame.Y = (4 - (int)(NPC.ai[1] / 10)) * 40;
+                if (NPC.ai[1] <= 60)
                 {
-                    Main.npc[leftClaw].velocity = new Vector2(0, -2) * (10 - NPC.ai[1]) / 5;
-                    Main.npc[rightClaw].velocity = new Vector2(0, -2) * (10 - NPC.ai[1]) / 5;
+                    Main.npc[leftClaw].velocity = new Vector2(0, -2) * (10 - NPC.ai[1] + 50) / 5;
+                    Main.npc[rightClaw].velocity = new Vector2(0, -2) * (10 - NPC.ai[1] + 50) / 5;
                 }
-                if(NPC.ai[1] == 10)
+                if(NPC.ai[1] == 60)
                 {
                     Main.npc[leftClaw].noGravity = false;
                     Main.npc[rightClaw].noGravity = false;
                     Main.npc[leftClaw].noTileCollide = false;
                     Main.npc[rightClaw].noTileCollide = false;
                 }
-                if(NPC.ai[1] >= 50)
+                if(NPC.ai[1] >= 100)
                 {
                     if(Main.npc[leftClaw].collideY || Main.npc[rightClaw].collideY )
                     {
-                        if(NPC.ai[1] >= 50)  Main.player[NPC.target].AddBuff(ModContent.BuffType<Dizziness>(), 60);
-                        if(NPC.ai[1] <= 75)
+                        if (NPC.ai[1] == 100)
+                        {
+                            foreach (var pl in Main.player)
+                            {
+                                for (int i = 0; i < (int)(pl.width / 16f); i++)
+                                {
+                                    int bx = (int)pl.BottomLeft.X / 16 + i;
+                                    int by = (int)pl.BottomLeft.Y / 16;
+                                    Tile tileBottom = Main.tile[bx, by];
+                                    if (tileBottom.HasUnactuatedTile)
+                                    {
+                                        pl.AddBuff(ModContent.BuffType<Dizziness>(), 60);
+                                    }
+                                }
+                            }
+                        }
+                        if (NPC.ai[1] >= 100)
+                        {
+                            foreach(var pl in Main.player)
+                            {
+                                if(pl.active && pl.HasBuff<Dizziness>())
+                                {
+                                    pl.fullRotationOrigin = player.Size / 2;
+                                    if (pl.fullRotation < Math.PI / 2) pl.fullRotation += (float)Math.PI / 8; 
+                                }
+                            }
+                            
+                        }
+                        if (NPC.ai[1] <= 125)
                         {
                             PunchCameraModifier PCM = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * 6.2831855f).ToRotationVector2(), 20f, 6f, 20, 1000f, "Rock");
                             EffectPlayer.CMS.Add(PCM);
                         }
                     }
                 }
-                if(NPC.ai[1] == 90)
+                if(NPC.ai[1] == 140)
                 {
                     Attack = false;
                     (Main.npc[leftClaw].ModNPC as SandDiablosClaw).thisAttack = false;
                     (Main.npc[rightClaw].ModNPC as SandDiablosClaw).thisAttack = false;
-                    Main.npc[leftClaw].frame.Y -= 44;
-                    Main.npc[rightClaw].frame.Y -= 44;
+                    Main.npc[leftClaw].frame.Y -= (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
+                    Main.npc[rightClaw].frame.Y -= (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
                     Main.npc[leftClaw].noGravity = true;
                     Main.npc[rightClaw].noGravity = true;
                     Main.npc[leftClaw].noTileCollide = true;
@@ -530,14 +665,19 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 }
             }
             NPC.ai[1]++;
+            if(NPC.ai[1] == 300 && AttackType == -1)
+            {
+                AttackType = Main.rand.Next(-1, 3);
+                NPC.ai[1] = 0;
+            }
             if(NPC.ai[1] == 150 && AttackType == 1)
             {
-                AttackType = Main.rand.Next(1, 4);
+                AttackType = -1;
                 NPC.ai[1] = 0;
             }
             if(NPC.ai[1] == 150 && AttackType == 3)
             {
-                AttackType = 1;
+                AttackType = -1;
                 NPC.ai[1] = 0;
             }
             if(NPC.ai[1] == 600) 
@@ -545,53 +685,61 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 switch(AttackType)
                 {
                     case 0:
-                        AttackType = 1;
+                        AttackType = -1;
                         break;
                     case 2:
-                        AttackType = Main.rand.Next(0, 4);
+                        AttackType = -1;
                         break;
                 }
                 NPC.ai[1] = 0;
             }
-            NPC.ai[2]++;
-            if(NPC.ai[2] == 60)
+            if(tailActive)
             {
-                if(tailType == 0)
+                NPC.ai[2]++;
+                if(NPC.ai[2] == 60)
                 {
-                    (Main.npc[tail].ModNPC as SandDiablosTail).thisAttack = true;
+                    if(tailType == 0)
+                    {
+                        (Main.npc[tail].ModNPC as SandDiablosTail).thisAttack = true;
+                    }
                 }
+                if(NPC.ai[2] <= 420 && tailType == 0 && NPC.ai[2] > 60)
+                {
+                    if((NPC.ai[2] - 60) % 120 == 50)
+                    {
+                        Main.npc[tail].velocity = Vector2.Normalize(player.Center - Main.npc[tail].Center) * 25f;
+                    }
+                    if((NPC.ai[2] - 60) % 120 >= 51 && NPC.ai[2] % 120 <= 111)
+                    {
+                        Main.npc[tail].velocity *= 0.93f;
+                        Main.npc[tail].rotation = Main.npc[tail].velocity.ToRotation() - (float)Math.PI / 2;
+                    }
+                    if((NPC.ai[2] - 60) % 120 >= 111)
+                    {
+                        Main.npc[tail].velocity = Vector2.Zero;
+                        Main.npc[tail].rotation = (player.Center - Main.npc[tail].Center).ToRotation() - (float)Math.PI / 2;
+                    }
+                }
+                if(NPC.ai[2] == 420)
+                {
+                    NPC.ai[2] = 0;
+                    switch(tailType)
+                    {
+                        case 0:
+                            tailType = 2;
+                            break;
+                        case 2:
+                            tailType = 0;
+                            break;
+                        //case 3:
+                    }
+                    (Main.npc[tail].ModNPC as SandDiablosTail).thisAttack = false;
+                }
+            
             }
-            if(NPC.ai[2] <= 420 && tailType == 0 && NPC.ai[2] > 60)
+            foreach(var pl in Main.player)
             {
-                if((NPC.ai[2] - 60) % 120 == 50)
-                {
-                    Main.npc[tail].velocity = Vector2.Normalize(player.Center - Main.npc[tail].Center) * 25f;
-                }
-                if((NPC.ai[2] - 60) % 120 >= 51 && NPC.ai[2] % 120 <= 111)
-                {
-                    Main.npc[tail].velocity *= 0.93f;
-                    Main.npc[tail].rotation = Main.npc[tail].velocity.ToRotation() - (float)Math.PI / 2;
-                }
-                if((NPC.ai[2] - 60) % 120 >= 111)
-                {
-                    Main.npc[tail].velocity = Vector2.Zero;
-                    Main.npc[tail].rotation = (player.Center - Main.npc[tail].Center).ToRotation() - (float)Math.PI / 2;
-                }
-            }
-            if(NPC.ai[2] == 420)
-            {
-                NPC.ai[2] = 0;
-                switch(tailType)
-                {
-                    case 0:
-                        tailType = 2;
-                        break;
-                    case 2:
-                        tailType = 0;
-                        break;
-                    //case 3:
-                }
-                (Main.npc[tail].ModNPC as SandDiablosTail).thisAttack = false;
+                if (pl.active && !pl.HasBuff<Dizziness>() && pl.fullRotation > 0) pl.fullRotation -= (float)Math.PI / 8;
             }
             base.AI();
         }

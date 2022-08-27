@@ -15,7 +15,10 @@ namespace ElementMachine.Buffs
         }
         public override void Update(Player player, ref int buffIndex) 
         {
-            player.velocity = Vector2.Zero;
+            player.velocity.X = 0;
+            player.immune = true;
+            player.immuneNoBlink = true;
+            player.controlJump = false;
             player.moveSpeed = 0;
         }
         public override void Update(NPC npc, ref int buffIndex)

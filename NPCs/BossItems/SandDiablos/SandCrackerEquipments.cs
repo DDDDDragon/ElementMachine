@@ -15,6 +15,26 @@ using Terraria.DataStructures;
 
 namespace ElementMachine.NPCs.BossItems.SandDiablos
 {
+	public class SandDiablosBody_bone : ElementItem
+    {
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("SandDiablosChest");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "荒砂的胸壳");
+			Tooltip.SetDefault("Sand Diablos material. Obtained by breaking its chest. Heavy, used to craft armor.");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵的素材。容易通过破坏砂角魔灵的胸壳部位获得。材质沉重，常用于防具上。");
+		}
+		public override void SetDefaults()
+		{
+			Item.width = 30;
+			Item.height = 22;
+			Item.maxStack = 99;
+			Item.value = 3500;
+			Item.rare = ItemRarityID.Blue;
+			Element = 3;
+			ElementLevel = 1.3f;
+		}
+	}
 	public class SandCrackerBow : ElementItem
 	{
 		public override void SetStaticDefaults()
@@ -41,6 +61,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.noMelee = true;
 			Item.shootSpeed = 7f;
 			Item.scale = 0.7f;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -102,6 +124,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 		}
         public override void SetDefaults()
 		{
+			Element = 3;
+			ElementLevel = 1f;
 			Item.width = 18;
 			Item.height = 20;
 			Item.useAnimation = 30;
@@ -112,15 +136,19 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.rare = ItemRarityID.Green;
 			Item.consumable = true;
 			Item.useTurn = true;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
 		public override bool? UseItem(Player player)
 		{
+			Main.NewText(ElementLevel);
 			if(player.ZoneDesert)
 			{
 				NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<Boss.SandDiablos.SandDiablos>());
 				SoundEngine.PlaySound(SoundID.Roar);
+				return true;
 			}
-			return true;
+			return false;
 		}
         public override void AddRecipes()
         {
@@ -146,7 +174,9 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
             shootType = ModContent.ProjectileType<SandCrackerChainSickleProj>();
             shootSpeed = 18.5f;
             Item.rare = ItemRarityID.Blue;
-            base.SetSickle();
+			Element = 3;
+			ElementLevel = 1.3f;
+			base.SetSickle();
         }
         public override void AddRecipes()
 		{
@@ -246,6 +276,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
             Item.maxStack = 999;
 			Item.value = 3500;
 			Item.rare = ItemRarityID.Green;
+			Element = 3;
+			ElementLevel = 1.2f;
 		}
     }
     public class SandDiablosCarapace : ElementItem
@@ -264,6 +296,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
             Item.maxStack = 999;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Blue;
+			Element = 3;
+			ElementLevel = 1.2f;
 		}
     }
 	[AutoloadEquip(EquipType.Head)]
@@ -299,6 +333,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 4;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
 		public override void AddRecipes()
 		{
@@ -342,6 +378,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 4;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
 		public override void AddRecipes()
 		{
@@ -387,6 +425,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 4;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
 		public override void AddRecipes()
 		{
@@ -420,6 +460,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 5;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}
 		public override void AddRecipes()
 		{
@@ -447,6 +489,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 2;
+			Element = 3;
+			ElementLevel = 1.3f;
 		}		
 		public override void UpdateEquip(Player player)
         {

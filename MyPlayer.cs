@@ -7,6 +7,9 @@ using Terraria.Localization;
 using ElementMachine.Tiles;
 using ElementMachine.World;
 using Microsoft.Xna.Framework;
+using ElementMachine.Tasks;
+using System.Linq;
+using Terraria.ID;
 
 namespace ElementMachine
 {
@@ -77,11 +80,17 @@ namespace ElementMachine
         }
         public override void OnEnterWorld(Player player)
         {
-            if (!FirstTalk) Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "向导貌似找你有些事情" : "The Guide may have something to talk with you");
+            //if(Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.Where(t => t.NPC == NPCID.Guide).ToList().Count == 0) Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.Add(TaskManager.GetTask<CatchFireElfTask>());
+            foreach(var i in NowTasks)
+            {
+                i.ConvIndex = 0;
+                Main.NewText(NPC.GetFullnameByID(i.NPC) + (GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "貌似找你有些事情" : "have something to talk with you"));
+            }
             base.OnEnterWorld(player);
         }
         public bool FirstTalk = false;
         public int TalkIndex = 0;
         public bool talkToGuide = false;
+        public List<TaskBase> NowTasks = new List<TaskBase>();
     }
 }

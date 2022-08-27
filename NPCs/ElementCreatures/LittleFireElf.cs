@@ -10,7 +10,27 @@ using System;
 
 namespace ElementMachine.NPCs.ElementCreatures
 {
-    public class LittleFireElf : ElementCreaturesBase
+	public class LittleFireElfItem : ModItem
+    {
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("LittleFireElf");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "小火灵");
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(7, 6));
+		}
+        public override void SetDefaults()
+        {
+			Item.height = 46;
+			Item.width = 30;
+			Item.maxStack = 999;
+			Item.value = 100;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Green;
+			base.SetDefaults();
+        }
+    }
+
+	public class LittleFireElf : ElementCreaturesBase
     {
 		public override void SetStaticDefaults()
 		{
@@ -31,7 +51,8 @@ namespace ElementMachine.NPCs.ElementCreatures
 			NPC.lifeMax = 10;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
-			Level = 2;
+			ElementLevel = 0.3f;
+			Element = 1;
 		}
 		bool wait = true;
 		int waitTimer = 0;
@@ -81,6 +102,10 @@ namespace ElementMachine.NPCs.ElementCreatures
         public override void OnCatch()
         {
 			Item.NewItem(null, Main.LocalPlayer.Center, ItemID.Wood);
+			foreach(var i in Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks)
+            {
+				Main.NewText(i.Name) ;
+            }
             base.OnCatch();
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)

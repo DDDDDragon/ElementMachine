@@ -26,7 +26,8 @@ namespace ElementMachine.NPCs.ElementCreatures
 			NPC.lifeMax = 100;
 			NPC.aiStyle = -1;
 			NPC.noGravity = false;
-			Level = 2;
+			ElementLevel = 1.4f;
+			Element = 3;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)

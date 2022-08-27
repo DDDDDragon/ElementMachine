@@ -29,7 +29,8 @@ namespace ElementMachine.NPCs.ElementCreatures
 			NPC.lifeMax = 40;
 			NPC.aiStyle = 3;
 			NPC.noGravity = false;
-			Level = 2;
+			ElementLevel = 1.4f;
+			Element = 2;
 		}
 		public override void PostAI()
 		{

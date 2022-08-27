@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -5,7 +6,7 @@ namespace ElementMachine.MyRecipe
 {
     public class BlueprintRecipe
     {
-        public static void OnCraft(Recipe recipe, Item item)
+        public static void OnCraft(Recipe recipe, Item item, List<Item> consumedItems)
         {
             if(!MyPlayer.AnalyzedItemsName.Contains(item.ModItem.Name))
             {

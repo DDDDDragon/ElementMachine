@@ -21,7 +21,7 @@ namespace ElementMachine.Buffs
         {
             if(!npc.boss)
             {
-                npc.velocity = new Vector2((float)(npc.velocity.X * 0.8), (float)(npc.velocity.Y * 0.8));
+                npc.velocity = new Vector2((float)(npc.velocity.X * 0.8), npc.velocity.Y);
                 Dust.NewDust(npc.Center,npc.width / 2, npc.height / 2, MyDustId.IceTorch);
             }
             

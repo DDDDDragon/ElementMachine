@@ -78,7 +78,7 @@ namespace ElementMachine.Bases
 
 		}
 	}
-    public abstract class BaseSickle : ModProjectile
+    public abstract class BaseSickle : ElementProj
     {
         public int ItemType = -200;
 		public virtual void Update(int Type)
@@ -265,11 +265,6 @@ namespace ElementMachine.Bases
         public bool dash = false;  
         public bool pullUp = false;
         public bool Move2 = false;          
-#pragma warning disable CS0414 // The field 'BaseSickle.t' is assigned but its value is never used
-#pragma warning disable CS0414 // 字段“BaseSickle.t”已被赋值，但从未使用过它的值
-        float t = 0;
-#pragma warning restore CS0414 // 字段“BaseSickle.t”已被赋值，但从未使用过它的值
-#pragma warning restore CS0414 // The field 'BaseSickle.t' is assigned but its value is never used
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			bool shouldMakeSound = false;

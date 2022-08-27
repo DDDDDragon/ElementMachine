@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using ElementMachine.Tasks;
+using System.Linq;
 
 namespace ElementMachine.NPCs
 {
@@ -12,39 +14,26 @@ namespace ElementMachine.NPCs
     {
         public override void GetChat(NPC npc, ref string chat)
         {
-            if(npc.type == NPCID.Guide)
+            if (Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.Where(t => t.NPC == npc.type).ToList().Count > 0)
             {
-                if(!Main.LocalPlayer.GetModPlayer<MyPlayer>().FirstTalk)
+                chat = "";
+                TaskBase task = Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.FirstOrDefault(t => t.NPC == npc.type);
+                int index = Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.FindIndex(0, t => t.NPC == npc.type);
+                if (task.ConvIndex != task.Conv.Count)
                 {
-                    switch(Main.LocalPlayer.GetModPlayer<MyPlayer>().TalkIndex)
-                    {
-                        case 0 :
-                            chat = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "你醒了？你之前从天上掉了下来——你是从泰拉大陆来的吧？(按对话键继续)" 
-                                : "You awake? You fell from the sky before——you come from the Terraria?(Press the Talk button to continue)";
-                            break;
-                        case 1:
-                            chat = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "我怎么知道的？你们用望远镜只能看到械元域的底部，以为我们是星星也正常，但是我们看你们的生活可真是一清二楚。(按对话键继续)"
-                                : "How do I know that? You Terrarian can just see the bottom of ElementMachineLand, so you think it's a star,but we can see your lives so clear.(Press the Talk button to continue)";
-                            break;
-                        case 2:
-                            chat = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "你的装备应该已经被能量漩涡分解了，那我就给你点基础工具吧，还有这个——元素捕捉器！你可以用它来捕捉小型元素生物，当然也不是无偿的，你要帮我调查一些东西，具体内容我会之后告诉你(按对话键继续)"
-                                : "Your equipments must be decompose by the energy stream, then let me give you some basic tools,and this——ElementCatcher! You can use this to catch small Element creatures, of course it's not free, you should do some search for me and I will tell you then.(Press the Talk button to continue)";
-                            break;
-                        case 3:
-                            chat = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "元素生物是什么？哦我想起来了，你们泰拉大陆是没有这些玩意的。在械元域，很多元素不再是抽象的概念，而是化成了生物存在于世上，比如这片草原时常会出现的小火灵就是最基本的一种元素生物。(按对话键继续)"
-                                : "What is Element creatures? Oh I remember, there're no that things on your Terrarian. On our ElementMachineLand, many Elements are not abstract things, they turned into creatures to live in this world, such as LittleFireElf appears on the grassland sometimes(Press the Talk button to continue)";
-                            break;
-                        case 4:
-                            chat = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "好了，更多的以后再说吧，你先去帮我抓3只小火灵吧！"
-                                : "OK, please catch 3 LittleFireElf for me first！";
-                            Item.NewItem(null, Main.LocalPlayer.Center, ItemID.CopperAxe);
-                            Item.NewItem(null, Main.LocalPlayer.Center, ItemID.CopperShortsword);
-                            Item.NewItem(null, Main.LocalPlayer.Center, ItemID.CopperPickaxe);
-                            break;
-                    }
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().TalkIndex++;
+                    chat = task.NextConv();
+                    Main.NewText(task.ConvIndex);
+                    Main.NewText(task.Conv.Count);
                     return;
                 }
+                if (task.ConvIndex == task.Conv.Count)
+                {
+                    Main.NewText("Remove");
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().NowTasks.RemoveAt(index);
+                }
+            }
+            if (npc.type == NPCID.Guide)
+            {
                 WeightedRandom<string> random = new WeightedRandom<string>();
                 if(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive)
                 {
@@ -61,6 +50,10 @@ namespace ElementMachine.NPCs
                 chat = random;
             }
             else base.GetChat(npc, ref chat);
+        }
+        public override bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+        {
+            return base.StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit);
         }
         public override void OnChatButtonClicked(NPC npc, bool firstButton)
         {
