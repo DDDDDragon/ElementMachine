@@ -103,19 +103,19 @@ namespace ElementMachine.Tiles
                         player.HeldItem.stack--;
                         if(player.HeldItem.ModItem is BossCore)
                         {
-                            RestrictCameraModifier RCM = new RestrictCameraModifier(player.Center, TileUtils.GetTileOrigin(i, j) * 16 + new Vector2(24, 100), 20, new Func<bool>(() => !MyPlayer.AltarS[vec]));
-                            EffectPlayer.CMS.Add(RCM);
-                            MyPlayer.AltarItem[vec] = player.HeldItem.type;
-                            MyPlayer.AltarS[vec] = true;
+                            //RestrictCameraModifier RCM = new RestrictCameraModifier(player.Center, TileUtils.GetTileOrigin(i, j) * 16 + new Vector2(24, 100), 20, new Func<bool>(() => !MyPlayer.AltarS[vec]));
+                            //EffectPlayer.CMS.Add(RCM);
+                            //MyPlayer.AltarItem[vec] = player.HeldItem.type;
+                            //MyPlayer.AltarS[vec] = true;
+                            (player.HeldItem.ModItem as OblationCore).OnSacrifice(player);
                         }
                         else (player.HeldItem.ModItem as OblationCore).OnSacrifice(player);
                     }
                     else if(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive) Main.NewText("你需要在对应元素的祭坛上献祭它!");
                     else Main.NewText("You need to sacrifice it on the correct Element Altar!");
                 }
-                #region 冰霜祭品献祭
                 if(player.HeldItem.type == ModContent.ItemType<FrozenStoneCoin>()) MyPlayer.AltarTypes[vec] = MyPlayer.AltarType.Ice;
-                #endregion
+                if(player.HeldItem.type == ModContent.ItemType<DiablosandStatue>()) MyPlayer.AltarTypes[vec] = MyPlayer.AltarType.Earth;
             }
             else if(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive)
             {

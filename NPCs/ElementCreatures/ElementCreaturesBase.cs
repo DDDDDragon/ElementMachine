@@ -1,5 +1,6 @@
 ﻿using ElementMachine.Buffs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -13,29 +14,51 @@ namespace ElementMachine.NPCs.ElementCreatures
         /// 1-Flame 2-Ice 3-Earth 4-Water 5-Nature
         /// </summary>
         public int Element;
-        public int FlameReactionTimer = 0; public bool Flame = false;
-        public int IceReactionTimer = 0; public bool Ice = false;
-        public int EarthReactionTimer = 0; public bool Earth = false;
-        public int WaterReactionTimer = 0; public bool Water = false;
+        public int ReactionTimer = 0;
+        /// <summary>
+        /// NPC受到的伤害
+        /// </summary>
+        public int DmgCnt;
+        /// <summary>
+        /// 反应持续时间 发生反应时赋值
+        /// </summary>
+        public int ReactionTime;
+        public int OriginalDefense;
+        public bool CanReact = true;
         public virtual void OnCatch()
         {
             NPC.life = 0;
         }
         public override void ResetEffects()
         {
-            if (Flame) FlameReactionTimer++; 
-            if(FlameReactionTimer == 150)
+            if (!CanReact)
             {
-                Flame = false;
-                FlameReactionTimer = 0;
+                ReactionTimer++;
             }
-            if (Ice) IceReactionTimer++;
-            if (IceReactionTimer == 150)
+            if (ReactionTimer == ReactionTime && ReactionTime != 0)
             {
-                Ice = false;
-                IceReactionTimer = 0;
+                ReactionTimer = 0;
+                CanReact = true;
+                NPC.damage = NPC.defDamage;
+                NPC.defense = NPC.defDefense;
+                ReactionTime = 0;
             }
             base.ResetEffects();
+        }
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+
+            base.PostDraw(spriteBatch, screenPos, drawColor);
+        }
+        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        {
+            base.OnHitByProjectile(projectile, damage, knockback, crit);
+            DmgCnt += damage;
+        }
+        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        {
+            base.OnHitByItem(player, item, damage, knockback, crit);
+            DmgCnt += damage;
         }
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
@@ -43,8 +66,12 @@ namespace ElementMachine.NPCs.ElementCreatures
             ElementProj EProj = projectile.ModProjectile as ElementProj;
             if (EProj == null) return;
             Player player = Main.player[projectile.owner];
-            if (EProj.Element == 1 && FlameReactionTimer == 0) OnHitByFlameProj(player, projectile, ref damage, ref knockback, ref crit);
-            if (EProj.Element == 2 && IceReactionTimer == 0) OnHitByIceProj(player, projectile, ref damage, ref knockback, ref crit);
+            if(ReactionTimer == 0)
+            {
+                if (EProj.Element == 1) OnHitByFlameProj(player, projectile, ref damage, ref knockback, ref crit);
+                if (EProj.Element == 2) OnHitByIceProj(player, projectile, ref damage, ref knockback, ref crit);
+            }
+            
             
         }
         public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
@@ -52,14 +79,17 @@ namespace ElementMachine.NPCs.ElementCreatures
             base.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
             ElementItem EItem = item.ModItem as ElementItem;
             if (EItem == null) return;
-            if (EItem.Element == 1 && FlameReactionTimer == 0) OnHitByFlameItem(player, item, ref damage, ref knockback, ref crit);
-            if (EItem.Element == 2 && IceReactionTimer == 0) OnHitByIceItem(player, item, ref damage, ref knockback, ref crit);
+            if (ReactionTimer == 0)
+            {
+                if (EItem.Element == 1) OnHitByFlameItem(player, item, ref damage, ref knockback, ref crit);
+                if (EItem.Element == 2) OnHitByIceItem(player, item, ref damage, ref knockback, ref crit);
+            }
             
         }
         public virtual void OnHitByIceProj(Player player, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
         {
             ElementProj EProj = projectile.ModProjectile as ElementProj;
-            Ice = true;
+            CanReact = false;
             float reactionStrength = 0;
             if (EProj.ElementLevel > ElementLevel) reactionStrength = (EProj.ElementLevel - ElementLevel) * EProj.ElementLevel / ElementLevel;//反应强度始终按照 (大 - 小) * 大 / 小 计算
             else reactionStrength = (ElementLevel - EProj.ElementLevel) * ElementLevel / EProj.ElementLevel;
@@ -68,13 +98,22 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EProj.ElementLevel > ElementLevel)
                 {
                     damage = (int)(damage * (1 + reactionStrength));//弹幕元素浓度高就增加伤害
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "融化" : "Melt");
                 }
                 else
                 {
-                    if (reactionStrength >= 0.5f) damage = damage / 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
-                    else damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
-                    CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Red, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "衰减" : "Weaken");
+                    if (reactionStrength >= 0.5f)
+                    {
+                        damage = damage / 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
+                        ReactionTime = 30;
+                    }
+                    else
+                    {
+                        damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                        ReactionTime = (int)(90 * (1 - reactionStrength));
+                        CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Red, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "衰减" : "Weaken");
+                    }
                 }
                 //TODO：释放水属性冲击
             }
@@ -83,11 +122,15 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EProj.ElementLevel < ElementLevel)
                 {
                     damage = (int)(damage * 0.9);//NPC元素浓度高 地属性被冰属性攻击固定减伤10% 不能暴击
+                    ReactionTime = 60;
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Brown, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "抵抗" : "Resist");
                 }
                 else
                 {
-                    //冻土 反应叫啥没想好
+                    NPC.damage = (int)(NPC.damage * 0.9f);
+                    NPC.defense = (int)(NPC.defense * 0.9f);//冻胀反应固定减防减攻10%
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
+                    CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "冻胀" : "Heaving");
                 }
                 crit = false;//反正不能暴击
             }
@@ -95,6 +138,7 @@ namespace ElementMachine.NPCs.ElementCreatures
             {
                 if (EProj.ElementLevel > ElementLevel) damage = (int)((EProj.ElementLevel / 10 + 1) * damage);//水属性被冰属性攻击 冰属性浓度高增伤 且只根据冰属性浓度计算增伤
                 NPC.AddBuff(ModContent.BuffType<lowerSpeed>(), 60 + (int)((EProj.ElementLevel - ElementLevel) * 10));//根据冰属性浓度和水属性浓度计算减速时间 基础时间1s
+                ReactionTime = 60 + (int)((EProj.ElementLevel - ElementLevel) * 10);
             }
             if (Element == 5)//自然属性被冰属性攻击
             {
@@ -104,7 +148,7 @@ namespace ElementMachine.NPCs.ElementCreatures
         public virtual void OnHitByFlameProj(Player player, Projectile projectile, ref int damage, ref float knockback, ref bool crit)
         {
             ElementProj EProj = projectile.ModProjectile as ElementProj;
-            Flame = true;
+            CanReact = false;
             float reactionStrength = 0;
             if (EProj.ElementLevel > ElementLevel) reactionStrength = (EProj.ElementLevel - ElementLevel) * EProj.ElementLevel / ElementLevel;//反应强度始终按照 (大 - 小) * 大 / 小 计算
             else reactionStrength = (ElementLevel - EProj.ElementLevel) * ElementLevel / EProj.ElementLevel;
@@ -113,12 +157,21 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EProj.ElementLevel > ElementLevel)
                 {
                     damage = (int)(damage * (1 + reactionStrength));//弹幕元素浓度高就增加伤害
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Red, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "融化" : "Melt");
                 }
                 else
                 {
-                    if (reactionStrength >= 0.5f) damage /= 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
-                    else damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                    if (reactionStrength >= 0.5f)
+                    {
+                        damage /= 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
+                        ReactionTime = 30;
+                    }
+                    else
+                    {
+                        damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                        ReactionTime = (int)(90 * (1 - reactionStrength));
+                    }
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "衰减" : "Weaken");
                 }
                 //TODO：释放水属性冲击
@@ -140,6 +193,7 @@ namespace ElementMachine.NPCs.ElementCreatures
                 {
                     damage = (int)(damage * 0.9);//NPC元素浓度高 地属性被火属性攻击固定减伤10% 不能暴击
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Brown, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "抵抗" : "Resist");
+                    ReactionTime = (int)(90 * (1 - reactionStrength));
                 }
             }
             if (Element == 4)//水属性被火属性攻击
@@ -150,7 +204,7 @@ namespace ElementMachine.NPCs.ElementCreatures
         public virtual void OnHitByIceItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
             ElementItem EItem = item.ModItem as ElementItem;
-            Ice = true;
+            CanReact = false;
             float reactionStrength = 0;
             if (EItem.ElementLevel > ElementLevel) reactionStrength = (EItem.ElementLevel - ElementLevel) * EItem.ElementLevel / ElementLevel;//反应强度始终按照 (大 - 小) * 大 / 小 计算
             else reactionStrength = (ElementLevel - EItem.ElementLevel) * ElementLevel / EItem.ElementLevel;
@@ -159,12 +213,21 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EItem.ElementLevel > ElementLevel)
                 {
                     damage = (int)(damage * (1 + reactionStrength));//弹幕元素浓度高就增加伤害
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "融化" : "Melt");
                 }
                 else
                 {
-                    if (reactionStrength >= 0.5f) damage = damage / 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
-                    else damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                    if (reactionStrength >= 0.5f)
+                    {
+                        damage = damage / 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
+                        ReactionTime = 30;
+                    }
+                    else
+                    {
+                        damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                        ReactionTime = (int)(90 * (1 - reactionStrength));
+                    }
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Red, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "衰减" : "Weaken");
                 }
                 //TODO：释放水属性冲击
@@ -174,11 +237,15 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EItem.ElementLevel < ElementLevel)
                 {
                     damage = (int)(damage * 0.9);//NPC元素浓度高 地属性被冰属性攻击固定减伤10% 不能暴击
+                    ReactionTime = 60;
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Brown, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "抵抗" : "Resist");
                 }
                 else
                 {
-                    //冻土 反应叫啥没想好
+                    NPC.damage = (int)(NPC.damage * 0.9f);
+                    NPC.defense = (int)(NPC.defense * 0.9f);//冻胀反应固定减防减攻10%
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
+                    CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "冻胀" : "Heaving");
                 }
                 crit = false;//反正不能暴击
             }
@@ -195,7 +262,7 @@ namespace ElementMachine.NPCs.ElementCreatures
         public virtual void OnHitByFlameItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
             ElementItem EItem = item.ModItem as ElementItem;
-            Flame = true;
+            CanReact = false;
             float reactionStrength = 0;
             if (EItem.ElementLevel > ElementLevel) reactionStrength = (EItem.ElementLevel - ElementLevel) * EItem.ElementLevel / ElementLevel;//反应强度始终按照 (大 - 小) * 大 / 小 计算
             else reactionStrength = (ElementLevel - EItem.ElementLevel) * ElementLevel / EItem.ElementLevel;
@@ -204,12 +271,21 @@ namespace ElementMachine.NPCs.ElementCreatures
                 if (EItem.ElementLevel > ElementLevel)
                 {
                     damage = (int)(damage * (1 + reactionStrength));//弹幕元素浓度高就增加伤害
+                    ReactionTime = (int)(90 * (1 + reactionStrength));
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Red, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "融化" : "Melt");
                 }
                 else
                 {
-                    if (reactionStrength >= 0.5f) damage /= 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
-                    else damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                    if (reactionStrength >= 0.5f)
+                    {
+                        damage /= 2;//NPC元素浓度高 如果反应强度高于0.5f 降低50%伤害
+                        ReactionTime = 30;
+                    }
+                    else
+                    {
+                        damage = (int)(damage * (1 - reactionStrength));//如果反应强度低于0.5f 按照反应强度降低伤害
+                        ReactionTime = (int)(90 * (1 - reactionStrength));
+                    }
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Azure, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "衰减" : "Weaken");
                 }
                 //TODO：释放水属性冲击

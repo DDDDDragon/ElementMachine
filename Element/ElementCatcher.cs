@@ -10,7 +10,7 @@ using ElementMachine.World;
 
 namespace ElementMachine.Element
 {
-    public class ElementCatcher : ModItem
+    public class ElementCatcher : ElementItem
     {
 		public override void SetStaticDefaults()
 		{
@@ -38,6 +38,7 @@ namespace ElementMachine.Element
 			Item.shoot = ModContent.ProjectileType<ElementCatcherProj>();
 			Item.shootSpeed = 10f;
 			Item.autoReuse = true;
+			Element = -1;
 		}
 		public override bool CanShoot(Player player)
 		{
@@ -74,8 +75,6 @@ namespace ElementMachine.Element
 		}
 		Vector2 vec;
 		int DustType = 0;
-		bool end = false;
-		int Timer2 = 0;
 		public override void AI()
 		{
 			var player = Main.player[Projectile.owner];

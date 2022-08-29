@@ -35,6 +35,7 @@ namespace ElementMachine.Oblation
         {
             if (item.ModItem == null) return;
             ElementItem EItem = item.ModItem as ElementItem;
+            if (ElementMachine.GetElementName(EItem.Element) == "None" || EItem == null) return;
             if (IceShoot && ElementMachine.GetElementName(EItem.Element) == "Ice") 
             {
                 //if(IceSpear) Projectile.NewProjectile(player.Center, Vector2.Normalize(Main.MouseWorld - player.Center) * 10, ModContent.ProjectileType<IceSpearProj>(), Math.Min(Math.Max(IceBaseDamage, (int)(Item.damage * 0.3) + player.statDefense / 10 + IceBaseDamage), IceMaxDamage), 1, Main.myPlayer);
