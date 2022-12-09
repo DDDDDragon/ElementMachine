@@ -34,6 +34,7 @@ namespace ElementMachine.NPCs.ElementCreatures
             if (!CanReact)
             {
                 ReactionTimer++;
+                //Main.NewText(ReactionTimer);
             }
             if (ReactionTimer == ReactionTime && ReactionTime != 0)
             {
@@ -193,7 +194,10 @@ namespace ElementMachine.NPCs.ElementCreatures
                 {
                     damage = (int)(damage * 0.9);//NPC元素浓度高 地属性被火属性攻击固定减伤10% 不能暴击
                     CombatText.NewText(new Rectangle((int)NPC.Center.X, (int)NPC.Center.Y, NPC.width, NPC.height), Color.Brown, GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "抵抗" : "Resist");
-                    ReactionTime = (int)(90 * (1 - reactionStrength));
+                    ReactionTime = reactionStrength >= 0.5f ? (int)(90 * reactionStrength) : (int)(90 * (1 - reactionStrength));
+                    Main.NewText(EProj.ElementLevel);
+                    Main.NewText(ElementLevel);
+                    Main.NewText(ReactionTime);
                 }
             }
             if (Element == 4)//水属性被火属性攻击

@@ -15,7 +15,7 @@ namespace ElementMachine.Oblation
             recipe.AddCondition(NetworkText.Empty, r => {
                 return (item as OblationCore).single && !MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name);
             });
-            recipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems){
+            recipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) {
                 if (!MyPlayer.Oblations.Contains(recipe.createItem.ModItem.Name) && (recipe.createItem.ModItem as OblationCore).single) MyPlayer.Oblations.Add(recipe.createItem.ModItem.Name);
             });
             return recipe;

@@ -22,7 +22,7 @@ namespace ElementMachine
         /// <summary>
         /// 1-Flame 2-Ice 3-Earth 4- Water 5-Nature
         /// </summary>
-        public int Element;
+        public int Element = -1;
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
             base.PostDrawTooltipLine(line);
@@ -65,7 +65,12 @@ namespace ElementMachine
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             ElementItem EItem = item.ModItem as ElementItem;
-            if(item.ModItem is ElementItem || item.ModItem is OblationCore)
+            if (EItem == null)
+            {
+                base.ModifyTooltips(item, tooltips);
+                return;
+            }
+            if (item.ModItem is ElementItem || item.ModItem is OblationCore)
             {
                 int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if(num != -1) 
@@ -130,6 +135,11 @@ namespace ElementMachine
         public override void PostDrawTooltipLine(Item item, DrawableTooltipLine line)
         {
             ElementItem EItem = item.ModItem as ElementItem;
+            if (EItem == null)
+            {
+                base.PostDrawTooltipLine(item, line);
+                return;
+            }
             if (line.Name.Equals("EAM:Elemental"))
 			{
 				Vector2 position = new Vector2((float)(line.X + (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, line.Text, new Vector2(1f, 1f), -1f).X), line.Y);
@@ -137,7 +147,7 @@ namespace ElementMachine
                 if(EItem.Element != -1)
                 {
                     num = ElementMachine.GetElementName(EItem.Element);
-                    Main.spriteBatch.Draw(ModContent.Request<Texture2D>($"ElementMachine/Element/{num}Icon").Value, position, Color.White);
+                    if(!Main.dedServ) Main.spriteBatch.Draw(ModContent.Request<Texture2D>($"ElementMachine/Element/{num}Icon").Value, position, Color.White);
                     
                 }
                 

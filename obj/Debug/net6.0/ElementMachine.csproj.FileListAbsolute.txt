@@ -156,7 +156,6 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\b
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.csproj.AssemblyReference.cache
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.AssemblyInfoInputs.cache
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.AssemblyInfo.cs
@@ -165,3 +164,4 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\o
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ref\ElementMachine.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.csproj.AssemblyReference.cache

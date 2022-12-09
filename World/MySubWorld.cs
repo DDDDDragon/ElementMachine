@@ -38,8 +38,8 @@ namespace ElementMachine.World
         {
             SubWorldSystem.Register(this);
         }
-        public SubWorld Lastworld { get; internal set; }
-        internal SubWorld LastReachable
+        public SubWorld Lastworld { get; set; }
+        public SubWorld LastReachable
         {
             get
             {
@@ -54,7 +54,7 @@ namespace ElementMachine.World
                 return LastReachable;
             }
         }
-        internal void ClearLastUntil(SubWorld end)
+        public void ClearLastUntil(SubWorld end)
         {
             if (Lastworld is null || Lastworld == end)
             {

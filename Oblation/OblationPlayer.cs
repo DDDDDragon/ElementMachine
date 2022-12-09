@@ -33,9 +33,17 @@ namespace ElementMachine.Oblation
         }
         public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (item.ModItem == null) return;
+            if (item.ModItem == null) 
+            {
+                base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+                return;
+            }
             ElementItem EItem = item.ModItem as ElementItem;
-            if (ElementMachine.GetElementName(EItem.Element) == "None" || EItem == null) return;
+            if (EItem == null || ElementMachine.GetElementName(EItem.Element) == "None")
+            {
+                base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+                return;
+            }
             if (IceShoot && ElementMachine.GetElementName(EItem.Element) == "Ice") 
             {
                 //if(IceSpear) Projectile.NewProjectile(player.Center, Vector2.Normalize(Main.MouseWorld - player.Center) * 10, ModContent.ProjectileType<IceSpearProj>(), Math.Min(Math.Max(IceBaseDamage, (int)(Item.damage * 0.3) + player.statDefense / 10 + IceBaseDamage), IceMaxDamage), 1, Main.myPlayer);

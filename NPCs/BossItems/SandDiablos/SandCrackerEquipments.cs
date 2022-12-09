@@ -298,14 +298,62 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.rare = ItemRarityID.Blue;
 			Element = 3;
 			ElementLevel = 1.2f;
-		}
+        }
     }
 	[AutoloadEquip(EquipType.Head)]
-	public abstract class SandCrackerMask : ElementItem
+	public class SandCrackerVisage : ElementItem
     {
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("SandCrackerHMask");
+			DisplayName.SetDefault("SandCrackerVisage");
+			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角崩裂者圣面");
+			Tooltip.SetDefault("It's like a sound says that you can kill 100 Barroths, but what's Battoth?\nincrease 5% minion damage");
+			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "好像有一个声音在说你能杀100只土砂龙,但是啥是土砂龙?\n提高5%魔法伤害");
+		}
+		public override bool IsArmorSet(Item head, Item body, Item legs)
+		{
+			return body.type == ModContent.ItemType<SandCrackerArmor>() && legs.type == ModContent.ItemType<SandCrackerCuisse>();
+		}
+		public override void UpdateArmorSet(Player player)
+		{
+			player.setBonus = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "提高5%魔法伤害和暴击率\n降低10%魔力消耗" :
+				"Increase 5% magic damage and crit\ndecrease 10% mana cost";
+			player.GetDamage(DamageClass.Magic) += 0.05f;
+			player.GetCritChance(DamageClass.Magic) += 5;
+			player.manaCost *= 0.9f;
+			EquipmentPlayer.SandCracker = true;
+		}
+		public override void UpdateEquip(Player player)
+		{
+			player.GetDamage(DamageClass.Magic) += 0.05f;
+			base.UpdateEquip(player);
+		}
+		public override void SetDefaults()
+		{
+			Item.width = 26;
+			Item.height = 30;
+			Item.value = 1000;
+			Item.rare = ItemRarityID.Green;
+			Item.defense = 2;
+			Element = 3;
+			ElementLevel = 1.3f;
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SandDiablosCarapace>(), 3);
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
+
+			recipe.Register();
+		}
+	}
+
+    [AutoloadEquip(EquipType.Head)]
+	public class SandCrackerMask : ElementItem
+    {
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("SandCrackerMask");
 			DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角崩裂者面具");
 			Tooltip.SetDefault("It's like a sound says that you can kill 100 Barroths, but what's Battoth?\nincrease 5% minion damage");
 			Tooltip.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "好像有一个声音在说你能杀100只土砂龙,但是啥是土砂龙?\n提高5%召唤伤害");
@@ -316,15 +364,26 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 		}
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "提高5%远程伤害和暴击率\n";
-            player.GetDamage(DamageClass.Ranged) += 0.05f;
+			player.setBonus = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "提高5%远程伤害和暴击率\n当人物站在物块上方时，远程伤害再增加10%" :
+				 "Increase 5% ranged damage and crit\nif player is over a tile, increase 10% more damage";
+			player.GetDamage(DamageClass.Ranged) += 0.05f;
 			player.GetCritChance(DamageClass.Ranged) += 5;
-            EquipmentPlayer.SandCracker = true;
+			for (int i = 0; i < (int)(player.width / 16f); i++)
+			{
+				int bx = (int)player.BottomLeft.X / 16 + i;
+				int by = (int)player.BottomLeft.Y / 16;
+				Tile tileBottom = Main.tile[bx, by];
+				if (tileBottom.HasUnactuatedTile)
+				{
+					player.GetDamage(DamageClass.Ranged) += 0.1f;
+				}
+			}
+			EquipmentPlayer.SandCracker = true;
 		}
 		public override void UpdateEquip(Player player)
         {
-            player.statDefense += 1;
-            base.UpdateEquip(player);
+			player.GetDamage(DamageClass.Ranged) += 0.05f;
+			base.UpdateEquip(player);
         }
         public override void SetDefaults()
 		{
@@ -332,7 +391,7 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.height = 30;
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
-			Item.defense = 4;
+			Item.defense = 2;
 			Element = 3;
 			ElementLevel = 1.3f;
 		}
@@ -344,7 +403,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			
 			recipe.Register();
 		}
-	}[AutoloadEquip(EquipType.Head)]
+	}
+	[AutoloadEquip(EquipType.Head)]
 	public class SandCrackerHeadgear : ElementItem
     {
 		public override void SetStaticDefaults()
@@ -360,16 +420,18 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 		}
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "提高5%召唤伤害\n提高15%盾矛防御加成和2点盾矛额外防御";
-            player.GetDamage(DamageClass.Summon) += 0.05f;
-            EquipmentPlayer.SandCracker = true;
+			player.setBonus = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "提高5%召唤伤害和暴击率\n提高15%盾矛防御加成和2点盾矛额外防御" :
+				  "Increase 5% summon damage and crit\nincrease 15% ShieldSpear defense addition and 2 ShieldSpear extra defense";
+			player.GetDamage(DamageClass.Summon) += 0.05f;
+			player.GetCritChance(DamageClass.Summon) += 5;
+			EquipmentPlayer.SandCracker = true;
             player.GetModPlayer<BasePlayer>().ShieldSpearDefensePer += 0.15f;
             player.GetModPlayer<BasePlayer>().ShieldSpearExtraDefense += 2;
 		}
 		public override void UpdateEquip(Player player)
         {
-            player.statDefense += 1;
-            base.UpdateEquip(player);
+			player.GetDamage(DamageClass.Summon) += 0.05f;
+			base.UpdateEquip(player);
         }
         public override void SetDefaults()
 		{
@@ -377,7 +439,7 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 			Item.height = 30;
 			Item.value = 1000;
 			Item.rare = ItemRarityID.Green;
-			Item.defense = 4;
+			Item.defense = 1;
 			Element = 3;
 			ElementLevel = 1.3f;
 		}
@@ -406,9 +468,11 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 		}
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "提高5%近战伤害\n提高2点防御和2点生命恢复";
+			player.setBonus = GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "提高5%近战伤害和暴击率\n提高2点防御和2点生命恢复" :
+				   "Increase 5% melee damage and crit\nincrease 2 defense and 2 life regen";
 			player.lifeRegen += 2;
             player.GetDamage(DamageClass.Melee) += 0.05f;
+			player.GetCritChance(DamageClass.Melee) += 5;
 			player.statDefense += 2;
             EquipmentPlayer.SandCracker = true;
 			//player.GetModPlayer<BasePlayer>().SickleDamagePer += 0.1f;
@@ -467,7 +531,8 @@ namespace ElementMachine.NPCs.BossItems.SandDiablos
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<SandDiablosCarapace>(), 5);
-            recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
+			recipe.AddIngredient(ModContent.ItemType<SandDiablosBody_bone>(), 1);
+			recipe.AddTile(ModContent.TileType<ElementHoroscoper>());
 			
 			recipe.Register();
 		}

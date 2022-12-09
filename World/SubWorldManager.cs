@@ -19,14 +19,14 @@ using Terraria.Utilities;
 
 namespace ElementMachine.World
 {
-    internal class SubWorldSystem : ModSystem
+    public class SubWorldSystem : ModSystem
     {
-        internal static Dictionary<string, SubWorld> subworlds;
-        internal static bool subworldReseted = false;
-        internal static SubWorld current;
-        internal static WorldFileData orig;
+        public static Dictionary<string, SubWorld> subworlds;
+        public static bool subworldReseted = false;
+        public static SubWorld current;
+        public static WorldFileData orig;
         private static bool SetWorldSizeWork;
-        private readonly Color[] color = new Color[Main.instance.mapSectionTexture.Width * Main.instance.mapSectionTexture.Height];
+        private readonly Color[] color = !Main.dedServ ? new Color[Main.instance.mapSectionTexture.Width * Main.instance.mapSectionTexture.Height] : null;
         public override void OnModLoad()
         {
             Player.Hooks.OnEnterWorld += Hook_OnEnterWorld;
@@ -131,7 +131,7 @@ namespace ElementMachine.World
             Player.Hooks.OnEnterWorld -= Hook_OnEnterWorld;
             On.Terraria.WorldGen.setWorldSize -= WorldGen_setWorldSize;
         }
-        internal static void Register(SubWorld subworld)
+        public static void Register(SubWorld subworld)
         {
             subworlds ??= new();
             subworlds.TryAdd(subworld.GetType().FullName, subworld);
@@ -143,11 +143,11 @@ namespace ElementMachine.World
                 current?.OnEnterWorld(player);
             }
         }
-        internal static bool IsActive<T>() where T : SubWorld
+        public static bool IsActive<T>() where T : SubWorld
         {
             return current?.GetType().FullName == typeof(T).FullName;
         }
-        internal static bool AnyActive => current is null;
+        public static bool AnyActive => current is null;
         private static string CurrentPath
         {
             get
@@ -163,7 +163,7 @@ namespace ElementMachine.World
                 return Path.Combine(Main.WorldPath, $"{ElementMachine.Instance.Name}", "Subworlds", Path.GetFileNameWithoutExtension(orig.Path), current.Name + ".wld");
             }
         }
-        internal static bool Enter<T>() where T : SubWorld
+        public static bool Enter<T>() where T : SubWorld
         {
             if (subworlds.TryGetValue(typeof(T).FullName, out var world))
             {
@@ -183,7 +183,7 @@ namespace ElementMachine.World
             }
             return false;
         }
-        internal static void Exit(bool iferrorbacktitil = true)
+        public static void Exit(bool iferrorbacktitil = true)
         {
             if (current is not null)
             {
@@ -202,7 +202,7 @@ namespace ElementMachine.World
                 subworldReseted = false;
             }
         }
-        internal static void ExitAll(bool backtitil = true)
+        public static void ExitAll(bool backtitil = true)
         {
             if (orig is null)
             {
@@ -290,7 +290,7 @@ namespace ElementMachine.World
                         {
                             Main.anglerQuestFinished = true;
                         }
-                        Main.OnTickForInternalCodeOnly += FinishPlayWorld;
+                        //IL.Terraria.Main.OnTickForpublicCodeOnly += FinishPlayWorld;
                     }
                     SetWorldSizeWork = false;
                     return;
@@ -316,7 +316,7 @@ namespace ElementMachine.World
                 ElementMachine.Instance.Logger.Error(e);
             }
         }
-        internal static WorldFileData GetCurrentSubWorldFileData()
+        public static WorldFileData GetCurrentSubWorldFileData()
         {
             WorldFileData data = new(CurrentPath, false)
             {
@@ -395,9 +395,9 @@ namespace ElementMachine.World
                 }
             }
         }
-        internal static void FinishPlayWorld()
+        public static void FinishPlayWorld()
         {
-            Main.OnTickForInternalCodeOnly -= FinishPlayWorld;
+            //Main.OnTickForpublicCodeOnly -= FinishPlayWorld;
             Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
             Main.ActivePlayerFileData.StartPlayTimer();
             WorldGen._lastSeed = Main.ActiveWorldFileData.Seed;

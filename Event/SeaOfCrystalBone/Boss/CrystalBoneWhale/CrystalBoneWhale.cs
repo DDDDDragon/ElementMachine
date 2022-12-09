@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ElementMachine.NPCs.BossItems.CrystalBoneWhale;
+using ElementMachine.Event.SeaOfCrystalBone.BossItem.CrystalBoneWhale;
 using System;
 
-namespace ElementMachine.NPCs.Boss.CrystalBoneWhale
+namespace ElementMachine.Event.SeaOfCrystalBone.Boss.CrystalBoneWhale
 {
 	public class CrystalBoneWhale : ModNPC
 	{

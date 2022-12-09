@@ -49,7 +49,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.value = 10000;
 			NPC.damage = 20;
 			NPC.defense = 6;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 300;
 			NPC.aiStyle = -1;
 			NPC.noGravity = false;
             NPC.noTileCollide = true;
@@ -73,6 +73,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             HeadN = Main.npc[Head];
             Vector2 nextCenter = new Vector2(HeadN.Center.X + RorL * (44 + (float)Math.Sin(HeadN.ai[1] / 30) * 3), HeadN.Center.Y + 20 - (float)Math.Sin(HeadN.ai[1] / 30) * 2);
             NPC.velocity = Vector2.Normalize(nextCenter - NPC.Center) * 4.5f * Vector2.Distance(nextCenter, NPC.Center) / 35;
+        }
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            base.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (projectile.penetrate == 1) projectile.Kill();
+            else damage /= 3;
         }
     }
     public class SandDiablosClaw : ElementCreaturesBase
@@ -115,7 +121,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         }
         public bool Attack
         {
-            get => (Main.npc[Head].ModNPC as SandDiablos).Attack || this.thisAttack;
+            get => Main.npc[Head].ModNPC == null ? this.thisAttack : (Main.npc[Head].ModNPC as SandDiablos).Attack || this.thisAttack;
         }
         public bool thisAttack = false;
         public Vector2 nextCenter = new Vector2();
@@ -129,7 +135,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if (!broke)
                 {
                     SoundEngine.PlaySound(SoundID.Item127);
-                    Main.NewText("砂角魔灵 部位破坏: 爪", Color.Gold);
+                    Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "砂角魔灵 部位破坏: 爪" : "SandDiablos Part Destroyed: Claw", Color.Gold);
                     if (!thisAttack) NPC.frame.Y = 44;
                     broke = true;
                 }
@@ -148,6 +154,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                     NPC.velocity = Vector2.Normalize(nextCenter - NPC.Center) * 4.5f * Vector2.Distance(nextCenter, NPC.Center) / 50;
                 }
             }
+        }
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            base.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (projectile.penetrate == 1) projectile.Kill();
+            else damage /= 3;
         }
     }
     public class SandDiablosBody_Bone : ModGore
@@ -198,7 +210,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.value = 10000;
 			NPC.damage = 20;
 			NPC.defense = 15;
-			NPC.lifeMax = 600;
+			NPC.lifeMax = 1000;
 			NPC.aiStyle = -1;
 			NPC.noGravity = false;
             NPC.noTileCollide = true;
@@ -225,7 +237,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if(!broke)
                 {
                     SoundEngine.PlaySound(SoundID.Item127);
-                    Main.NewText("砂角魔灵 部位破坏: 胸壳", Color.Gold);
+                    Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "砂角魔灵 部位破坏: 胸壳" : "SandDiablos Part Destroyed: Chest", Color.Gold);
                     if (Main.rand.NextBool()) Item.NewItem(null, NPC.Center, ModContent.ItemType<SandDiablosBody_bone>());
                     else Gore.NewGore(null, NPC.Center, Vector2.Zero, ModContent.GoreType<SandDiablosBody_Bone>());
                     broke = true;
@@ -246,6 +258,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             }
         }
         public Vector2 vec = new Vector2(0, -4);
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            base.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (projectile.penetrate == 1) projectile.Kill();
+            else damage /= 3;
+        }
         public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
         {
             double x = Main.rand.NextFloat(0, (float)Math.PI * 2);
@@ -286,7 +304,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.value = 10000;
 			NPC.damage = 20;
 			NPC.defense = 12;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 600;
 			NPC.aiStyle = -1;
 			NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -308,7 +326,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if(!broke)
                 {
                     SoundEngine.PlaySound(SoundID.Item127);
-                    Main.NewText("砂角魔灵 部位破坏: 尾", Color.Gold);
+                    Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "砂角魔灵 部位破坏: 尾" : "SandDiablos Part Destroyed: Tail", Color.Gold);
                     NPC.frame.Y = 40;
                     broke = true;
                 }
@@ -329,6 +347,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 }
             }
         }
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            base.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (projectile.penetrate == 1) projectile.Kill();
+            else damage /= 3;
+        }
     }
     public class SandDiablos : ElementCreaturesBase
     {
@@ -336,7 +360,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         {
             DisplayName.SetDefault("SandDiablos");
             DisplayName.AddTranslation(GameCulture.FromCultureName(GameCulture.CultureName.Chinese), "砂角魔灵");
-            Main.npcFrameCount[NPC.type] = 3;
+            Main.npcFrameCount[NPC.type] = 6;
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
@@ -347,7 +371,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             NPC.value = 10000;
 			NPC.damage = 20;
 			NPC.defense = 6;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 800;
 			NPC.aiStyle = -1;
 			NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -362,7 +386,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         public override void OnKill()
         {
             MyWorld.SandDiablos = true;
-            Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "少量的荒砂已经附着到沙漠生灵的身上" : "Some Diablosand", new Color(182, 146, 86));
+            Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "少量的荒砂已经附着到沙漠生灵的身上" : "Some Diablosand have cling to the creatures in the desert", new Color(182, 146, 86));
             Dust.NewDust(NPC.Center, 1, 1, MyDustId.YellowGoldenFire, NPC.velocity.X / 10, NPC.velocity.Y / 10);
             Dust.NewDust(NPC.Center, 1, 1, MyDustId.YellowFx1, NPC.velocity.X / 10, NPC.velocity.Y / 10);
             base.OnKill();
@@ -395,17 +419,19 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
         public bool tailActive = true;
         int tailType = 0;
         int DmgAllCnt;
+        /// <summary>
+        /// NPC平滑追踪的点
+        /// </summary>
         Vector2 chasePos;
         public bool broke = false;
         public override void AI()
         {
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
-            if(DmgAllCnt >= 3600)
+            if(DmgAllCnt >= 4200)
             {
                 NPC.life = Main.npc[leftClaw].life = Main.npc[rightClaw].life = Main.npc[leftShoulder].life =
                 Main.npc[rightShoulder].life = Main.npc[body].life = Main.npc[tail].life = 0;
-
                 Main.npc[leftClaw].checkDead();
                 Main.npc[rightClaw].checkDead();
                 Main.npc[leftShoulder].checkDead();
@@ -420,7 +446,7 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if (!broke)
                 {
                     SoundEngine.PlaySound(SoundID.Item127);
-                    Main.NewText("砂角魔灵 部位破坏: 头", Color.Gold);
+                    Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? "砂角魔灵 部位破坏: 头" : "SandDiablos Part Destroyed: Head", Color.Gold);
                     if (Main.rand.NextBool())
                     {
                         Item.NewItem(null, NPC.Center, ModContent.ItemType<SandDiablosHorn>());
@@ -436,6 +462,11 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             }
             if (NPC.localAI[0] == 0f) 
             {
+                NPC.immortal = true;
+                Main.NewText(GameCulture.FromCultureName(GameCulture.CultureName.Chinese).IsActive ? 
+                    "砂角魔灵 ≮特质≯: 【不可穿透】 所有击中它的穿透弹幕伤害减至33% 不可穿透的弹幕会被摧毁" : 
+                    "SandDiablos ≮Idiosyncrasy≯: 【Unpenetratable】 Any penetratable projectile hit it will decrease damage to 33%, unpenetratable projectile will be crashed", Color.Gold);
+
                 leftClaw = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X - 48, (int)NPC.position.Y + 60, ModContent.NPCType<SandDiablosClaw>());
                 Main.npc[leftClaw].position = NPC.position + new Vector2(-48, 60);
                 Main.npc[leftClaw].immortal = true;
@@ -479,8 +510,18 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
             DmgAllCnt = DmgCnt + (Main.npc[leftClaw].ModNPC as SandDiablosClaw).DmgCnt + (Main.npc[rightClaw].ModNPC as SandDiablosClaw).DmgCnt
                 + (Main.npc[leftShoulder].ModNPC as SandDiablosShoulder).DmgCnt + (Main.npc[rightShoulder].ModNPC as SandDiablosShoulder).DmgCnt
                 + (Main.npc[body].ModNPC as SandDiablosBody).DmgCnt + (Main.npc[tail].ModNPC as SandDiablosTail).DmgCnt;
-            Main.NewText(DmgAllCnt);
-            if (NPC.Distance(player.Center + new Vector2(0, -250)) > 20 && AttackType != -1 && !Attack) NPC.velocity = Vector2.Normalize(player.Center + new Vector2(0, -250) - NPC.Center) * 2.1f * NPC.Distance(player.Center + new Vector2(0, -250)) / 70;
+            if (AttackType != -1 && !Attack)
+            {
+                chasePos = player.Center + new Vector2(0, -250);
+                if (NPC.Distance(chasePos) > 20)
+                {
+                    NPC.velocity = Vector2.Normalize(chasePos - NPC.Center) * 2.1f * NPC.Distance(chasePos) / 70;
+                }
+                else
+                {
+
+                }
+            }
             else if (Attack) NPC.velocity = Vector2.Zero;
             else NPC.velocity = NPC.velocity * 8 / 10;
             /*
@@ -631,14 +672,18 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if(NPC.ai[1] == 50)
                 {
                     Attack = true;
-                    Main.npc[leftClaw].frame.Y += (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
-                    Main.npc[rightClaw].frame.Y += (NPC.life < NPC.lifeMax / 2) ? 44 : 88;
+                    Main.npc[leftClaw].frame.Y += ((Main.npc[leftClaw].ModNPC as SandDiablosClaw).DmgCnt >= Main.npc[leftClaw].lifeMax / 2) ? 44 : 88;
+                    Main.npc[rightClaw].frame.Y += ((Main.npc[rightClaw].ModNPC as SandDiablosClaw).DmgCnt >+ Main.npc[rightClaw].lifeMax / 2) ? 44 : 88;
                     (Main.npc[leftClaw].ModNPC as SandDiablosClaw).thisAttack = true;
                     (Main.npc[rightClaw].ModNPC as SandDiablosClaw).thisAttack = true;
                     (Main.npc[leftClaw].ModNPC as SandDiablosClaw).nextCenter = Vector2.Zero;
                     (Main.npc[rightClaw].ModNPC as SandDiablosClaw).nextCenter = Vector2.Zero;
                 }
-                if(NPC.ai[1] >= 30 && NPC.ai[1] <= 40) NPC.frame.Y = (4 - (int)(NPC.ai[1] / 10)) * 40;
+                if (NPC.ai[1] >= 30 && NPC.ai[1] <= 40)
+                {
+                    if (!broke) NPC.frame.Y = (4 - (int)(NPC.ai[1] / 10)) * 40;
+                    else NPC.frame.Y = (4 - (int)(NPC.ai[1] / 10)) * 40 + 120;
+                }
                 if (NPC.ai[1] <= 60)
                 {
                     Main.npc[leftClaw].velocity = new Vector2(0, -2) * (10 - NPC.ai[1] + 50) / 5;
@@ -776,6 +821,12 @@ namespace ElementMachine.NPCs.Boss.SandDiablos
                 if (pl.active && !pl.HasBuff<Dizziness>() && pl.fullRotation > 0) pl.fullRotation -= (float)Math.PI / 8;
             }
             base.AI();
+        }
+        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            base.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (projectile.penetrate == 1) projectile.Kill();
+            else damage /= 3;
         }
     }
     public class SandBonePiece : ModProjectile

@@ -3,9 +3,9 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
 
-namespace ElementMachine.NPCs.BossItems.CrystalBoneWhale
+namespace ElementMachine.Event.SeaOfCrystalBone.BossItem.CrystalBoneWhale
 {
-    public class WhaleOre : ModItem
+    public class WhaleOre : ElementItem
     {
         public override void SetStaticDefaults()
         {
@@ -20,9 +20,11 @@ namespace ElementMachine.NPCs.BossItems.CrystalBoneWhale
             Item.value = 10;
             Item.rare = ItemRarityID.Blue;
             Item.maxStack = 999;
+            Element = 4;
+            ElementLevel = 1.5f;
         }
     }
-        public class WhaleBonePiece : ModItem
+        public class WhaleBonePiece : ElementItem
     {
         public override void SetStaticDefaults()
         {
@@ -37,9 +39,11 @@ namespace ElementMachine.NPCs.BossItems.CrystalBoneWhale
             Item.value = 10;
             Item.rare = ItemRarityID.Blue;
             Item.maxStack = 999;
+            Element = 4;
+            ElementLevel = 1.5f;
         }
     }
-        public class WhaleSkin : ModItem
+        public class WhaleSkin : ElementItem
     {
         public override void SetStaticDefaults()
         {
@@ -54,6 +58,8 @@ namespace ElementMachine.NPCs.BossItems.CrystalBoneWhale
             Item.value = 10;
             Item.rare = ItemRarityID.Blue;
             Item.maxStack = 999;
+            Element = 4;
+            ElementLevel = 1.5f;
         }
     }
 }

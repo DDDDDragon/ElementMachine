@@ -36,7 +36,7 @@ namespace ElementMachine.Machine
             Recipe blueprintRecipe = CreateRecipe(20);
             blueprintRecipe.AddIngredient(this, 20);
             blueprintRecipe.AddTile(ModContent.TileType<AlloyAnalyzer>());
-            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems) {
+            blueprintRecipe.AddOnCraftCallback(delegate (Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) {
                 BlueprintRecipe.OnCraft(recipe, item, consumedItems);
             });
             blueprintRecipe.Register();

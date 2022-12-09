@@ -1,6 +1,10 @@
 作者由于开学高二下学期了再加上制作组就一个人所以可能日后更新速度会减慢很多!
 
-This is a BETA!!! Add some Element reaction and a new boss. Maybe lots of bugs XD.
+This is a BETA!!! Add some Element reaction and a new boss. Maybe lots of bugs XD.(yes there are lots of bugs)
+BETA 0.2.0.1. Fix some bugs. You say that custom swing crash but it's alright in my PC so try this new version and tell me then. Thanks!
+hmmm who knows why I cant use steam workshop to talk with you?
+The new boss has no life but you need to do damage to it's every part, when the damage in total more than 3600, it will die
+新boss并没有血条，不过你需要对它的各个部位造成伤害直至伤害总计达到3600，他就会趋势辣！ 
 
 Me, the author will be a Senior 3 student and the only author is me so i will update mod really slow from March!
 qq群号1158130257
@@ -19,43 +23,10 @@ The 1.4 version is HERE！！！！！！！
 
 目前40+物品,1敌怪(有1个还未实装),3物块,boss1个,另外1个正在制作
 
+v0.2.0.1更新概要
+-修复bug
+
 v0.2.0.0更新概要
 -正式推出1个boss
 -初步添加元素反应设定
 -更换图标
-
-v0.1.3.0更新概要
--更新了祭坛与祭品的设定
--添加了物品悬停提示的背景
--初步添加物品元素
--数值完善
-
-v0.1.2.4更新概要
--新的机械侧套装
--修复了可以站在机械分析仪上的bug
--添加了mod界面的自定义背景
--添加初级合金武器
-
-V0.1.2.3更新概要
--添加一套新的机械侧套装
--修复了向导售卖物品的bug
--数值平衡
-
-V0.1.2.2更新概要
--添加前期元素侧合成台——元素星象仪,修改前期沙漠与雪地两套套装合成所需合成台
--添加两个丛林可获得的旋刃
--数值完善
-
-V0.1.2.1更新概要
-
--添加一些机械侧设定与分析机制,解决前期挖不到矿石无法发展机械侧的问题
--为向导添加商店,出售已分析过的机械侧锭
--为雪地对应前期套装添加敌怪,提高雪地套装合成难度,以防数值崩坏
--数值完善
-
-V0.1.1.1更新概要
-
--添加前期沙漠和雪地的两套元素侧对应装备和对应武器
--添加少量机械侧物品
--添加特殊种类近战武器——钩镰
--雪地对应武器长矛的AI修改为与原版不同的蓄力刺出

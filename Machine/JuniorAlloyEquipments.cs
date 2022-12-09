@@ -115,7 +115,6 @@ namespace ElementMachine.Machine
             recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 20);
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 20);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-			
 			recipe.Register();
 		}
     }
@@ -260,7 +259,6 @@ namespace ElementMachine.Machine
             recipe.AddIngredient(ModContent.ItemType<JuniorAlloy>(), 15);
             recipe.AddIngredient(ModContent.ItemType<MagicLoop>(), 5);
             recipe.AddTile(ModContent.TileType<AlloyWorkBench>());
-			
 			recipe.Register();
 		}
     }

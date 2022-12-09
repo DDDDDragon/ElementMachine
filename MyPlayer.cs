@@ -74,7 +74,7 @@ namespace ElementMachine
         }
         public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
         {
-            itemsByMod["Terraria"].Clear();
+            //itemsByMod["Terraria"].Clear();
             base.ModifyStartingInventory(itemsByMod, mediumCoreDeath);
             
         }
