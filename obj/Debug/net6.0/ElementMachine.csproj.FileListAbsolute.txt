@@ -1,6 +1,5 @@
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ElementMachine.deps.json
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ElementMachine.dll
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ref\ElementMachine.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ElementMachine.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\Basic.Reference.Assemblies.Net60.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\CsvHelper.dll
@@ -70,8 +69,6 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\b
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\Mono.Cecil.Mdb.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\Mono.Cecil.Pdb.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\Mono.Cecil.Rocks.pdb
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.RuntimeDetour.xml
-C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Utils.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ReLogic.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\ReLogic.xml
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\System.CodeDom.xml
@@ -165,3 +162,12 @@ C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\o
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ref\ElementMachine.dll
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.pdb
 C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\ElementMachine.csproj.AssemblyReference.cache
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Backports.dll
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Core.dll
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.ILHelpers.dll
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Backports.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Core.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.ILHelpers.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.RuntimeDetour.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\bin\Debug\net6.0\MonoMod.Utils.pdb
+C:\Users\ASUS\Documents\My Games\Terraria\tModLoader\ModSources\ElementMachine\obj\Debug\net6.0\refint\ElementMachine.dll
